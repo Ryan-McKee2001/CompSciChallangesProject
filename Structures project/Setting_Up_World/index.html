@@ -8,33 +8,35 @@
 <body>
     <script src="js/three.js"></script>
     <script src="js/ammo.js"></script>
+    <script src="{% static 'js/OrbitControls.js' %}"></script>
     <script>
 
         //variable declaration
-        let physicsWorld, scene, camera, renderer, rigidBodies = []
+        let physicsWorld, controls, scene, camera, renderer, rigidBodies = []
         
         //Ammojs Initialization
-        Ammo().then( start )
+        Ammo().then( Init )
         
-        function start()
+        function Init()
         {
-              //code goes here
-              tmpTrans = new Ammo.btTransform();
-              setupPhysicsWorld();
-              setupGraphics();
-              createBlock();
-              renderFrame();
+            //code goes here
+            tmpTrans = new Ammo.btTransform();
+            setupPhysicsWorld();
+            setupGraphics();
+            createBlock();
+            createBall();
+            renderFrame();
         }
     
         function setupPhysicsWorld()
         {
-                let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),
-                    dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),
-                    overlappingPairCache = new Ammo.btDbvtBroadphase(),
-                    solver = new Ammo.btSequentialImpulseConstraintSolver();
-        
-                physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-                physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
+            let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),
+                dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),
+                overlappingPairCache = new Ammo.btDbvtBroadphase(),
+                solver = new Ammo.btSequentialImpulseConstraintSolver();
+
+            physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+            physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
         }
         
         function setupGraphics()
@@ -87,10 +89,19 @@
                                                  
             renderer.shadowMap.enabled = true;
         }
-                                                 
+         
+        function setUpControls(){
+            const controls = new THREE.OrbitControls( camera, renderer.domElement );
+            controls.addEventlistener( 'change', render );
+            controls.minDistance = 20;
+            controls.maxDistance = 50;
+            controls.maxPolarAngle = Math.PI/2;
+        }
+
         function renderFrame()
         {
             let deltaTime = clock.getDelta();
+            updatePhysics(deltaTime);
             renderer.render( scene, camera );
             requestAnimationFrame( renderFrame );
         }
@@ -103,7 +114,7 @@
             let mass = 0;
 
             //threeJS Section
-            let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0xa0afa4}));
+            let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0x3c4145}));
 
             blockPlane.position.set(pos.x, pos.y, pos.z);
             blockPlane.scale.set(scale.x, scale.y, scale.z);
@@ -133,13 +144,54 @@
             physicsWorld.addRigidBody( body );
             
         }
+
+        function createBall(){
+    
+            let pos = {x: 0, y: 20, z: 0};
+            let radius = 2;
+            let quat = {x: 0, y: 0, z: 0, w: 1};
+            let mass = 1;
+
+            //threeJS Section
+            let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0xff0505}));
+
+            ball.position.set(pos.x, pos.y, pos.z);
+            
+            ball.castShadow = true;
+            ball.receiveShadow = true;
+
+            scene.add(ball);
+
+
+            //Ammojs Section
+            let transform = new Ammo.btTransform();
+            transform.setIdentity();
+            transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+            transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+            let motionState = new Ammo.btDefaultMotionState( transform );
+
+            let colShape = new Ammo.btSphereShape( radius );
+            colShape.setMargin( 0.05 );
+
+            let localInertia = new Ammo.btVector3( 0, 0, 0 );
+            colShape.calculateLocalInertia( mass, localInertia );
+
+            let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+            let body = new Ammo.btRigidBody( rbInfo );
+
+
+            physicsWorld.addRigidBody( body );
+            
+            ball.userData.physicsBody = body;
+            rigidBodies.push(ball);
+        }
+
                             
         function updatePhysics( deltaTime )
         {
             // Step world
             physicsWorld.stepSimulation( deltaTime, 10 );
-
-
+    
             // Update rigid bodies
             for ( let i = 0; i < rigidBodies.length; i++ )
             {
