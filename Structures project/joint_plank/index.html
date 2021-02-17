@@ -23,8 +23,8 @@
             tmpTrans = new Ammo.btTransform();
             setupPhysicsWorld();
             setupGraphics();
+            createPlank();
             createBlock();
-            createBall();
             renderFrame();
         }
     
@@ -143,6 +143,49 @@
 
             physicsWorld.addRigidBody( body );
             
+        }
+
+        function createPlank(){
+            let width = 5;  // This is the width of the plank in inches
+            let length = 32;  // This is the length of the plank in inches
+            let posy = 2;
+            let mass = 1;
+
+            let posx = 0;
+            for(let x = 0; x<length;x++){  // nested for loop goes though 
+                let posz = 0;
+                for(let i = 0; i<width;i++){
+                    let block = new THREE.Mesh( new THREE.BoxBufferGeometry(1,1,1), new THREE.MeshPhongMaterial({color: 0x964B00}) );
+                    block.position.set(i-3, posy, x-10);
+
+                    block.castShadow = true;
+                    block.receiveShadow = true;
+
+                    scene.add( block );
+
+                    //Ammojs Section
+                    let transform = new Ammo.btTransform();
+                    transform.setIdentity();
+                    transform.setOrigin( new Ammo.btVector3( i-3, posy, x-10 ) );
+                    transform.setRotation( new Ammo.btQuaternion( 0, 0, 0, 1 ) );
+                    let motionState = new Ammo.btDefaultMotionState( transform );
+
+                    let blockShape = new Ammo.btBoxShape(new Ammo.btVector3( 0,0,0 ));
+                    blockShape.setMargin( 0.05 );
+
+                    let localInertia = new Ammo.btVector3( 0, 0, 0 );
+                    blockShape.calculateLocalInertia( mass, localInertia );
+
+                    let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, blockShape, localInertia );
+                    let body = new Ammo.btRigidBody( rbInfo );
+
+
+                    physicsWorld.addRigidBody( body );
+                        
+                    block.userData.physicsBody = body;
+                    rigidBodies.push(block);
+                }
+            }
         }
 
         function createBall(){
