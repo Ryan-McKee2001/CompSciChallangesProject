@@ -12,8 +12,14 @@
     <script>
 
         //variable declaration
-        let physicsWorld, controls, scene, camera, renderer, rigidBodies = []
-        
+        let physicsWorld, controls, scene, camera, renderer, rigidBodies = [];
+        let container, stats;
+
+        const softBodies = [];
+        const margin = 0.06;
+        const margin = 0.06;
+        let transformAux1;
+        let softBodyHelpers;
         //Ammojs Initialization
         Ammo().then( Init )
         
@@ -37,6 +43,9 @@
 
             physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
             physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
+
+            transformAux1 = new Ammo.btTransform();
+            softBodyHelpers = new Aux.btSoftBodyHelpers();
         }
         
         function setupGraphics()
@@ -88,6 +97,8 @@
             document.body.appendChild( renderer.domElement );
                                                  
             renderer.shadowMap.enabled = true;
+
+            window.addEventListener('resize', onWindowResize);
         }
          
         function setUpControls(){
