@@ -25,6 +25,7 @@
             setupGraphics();
             createPlank();
             createBlock();
+            createBall();
             renderFrame();
         }
     
@@ -105,7 +106,7 @@
             renderer.render( scene, camera );
             requestAnimationFrame( renderFrame );
         }
-                                                 
+        
         function createBlock()
         {
             let pos = {x: 0, y: 0, z: 0};
@@ -146,17 +147,15 @@
         }
 
         function createPlank(){
-            let width = 5;  // This is the width of the plank in inches
-            let length = 32;  // This is the length of the plank in inches
-            let posy = 2;
+            let width = 2;  // This is the width of the plank in inches
+            let length = 5;  // This is the length of the plank in inches
+            let posy = 10;
             let mass = 1;
 
-            let posx = 0;
-            for(let x = 0; x<length;x++){  // nested for loop goes though 
-                let posz = 0;
-                for(let i = 0; i<width;i++){
+            for(let z = 0; z<length;z++){  // nested for loop goes though 
+                for(let x = 0; x<width;x++){
                     let block = new THREE.Mesh( new THREE.BoxBufferGeometry(1,1,1), new THREE.MeshPhongMaterial({color: 0x964B00}) );
-                    block.position.set(i-3, posy, x-10);
+                    block.position.set(x-3, posy, z-10);
 
                     block.castShadow = true;
                     block.receiveShadow = true;
@@ -166,7 +165,7 @@
                     //Ammojs Section
                     let transform = new Ammo.btTransform();
                     transform.setIdentity();
-                    transform.setOrigin( new Ammo.btVector3( i-3, posy, x-10 ) );
+                    transform.setOrigin( new Ammo.btVector3( x-3, posy, z-10 ) );
                     transform.setRotation( new Ammo.btQuaternion( 0, 0, 0, 1 ) );
                     let motionState = new Ammo.btDefaultMotionState( transform );
 
