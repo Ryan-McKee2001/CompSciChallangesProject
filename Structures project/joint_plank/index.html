@@ -183,11 +183,13 @@
                         
                     block.userData.physicsBody = body;
                     rigidBodies.push(block);
+
+                    // create a joint between the two objects in the physics world.
                 }
             }
         }
 
-        function createBall(){
+        function createBall(){  // This is just a example function for creating an object in ammo
     
             let pos = {x: 0, y: 20, z: 0};
             let radius = 2;
