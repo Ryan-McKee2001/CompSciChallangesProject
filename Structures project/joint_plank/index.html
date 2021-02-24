@@ -8,17 +8,19 @@
 <body>
     <script src="js/three.js"></script>
     <script src="js/ammo.js"></script>
+    <script src = "js/OrbitControls.js"></script>
    
     <script>
 
         //variable declaration
         let physicsWorld, controls, scene, camera, renderer, rigidBodies = []
-        
+        window.addEventListener('resize', onWindowResize, false);
         //Ammojs Initialization
         Ammo().then( Init )
         
         function Init()
         {
+            
             //code goes here
             tmpTrans = new Ammo.btTransform();
             setupPhysicsWorld();
@@ -26,6 +28,7 @@
             createPlank();
             createBlock();
             renderFrame();
+
         }
     
         function setupPhysicsWorld()
@@ -90,6 +93,13 @@
             renderer.shadowMap.enabled = true;
         }
          
+        //This is a function which will be called a an event listener to resize the tab.
+        function onWindowResize(){
+            camera.aspect = window.innerWidth/window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth,window.innerHeight);
+        }
+
         function setUpControls(){
             const controls = new THREE.OrbitControls( camera, renderer.domElement );
             controls.addEventlistener( 'change', render );
@@ -101,6 +111,7 @@
         function renderFrame()
         {
             let deltaTime = clock.getDelta();
+            //controls.update();
             updatePhysics(deltaTime);
             renderer.render( scene, camera );
             requestAnimationFrame( renderFrame );
@@ -151,6 +162,8 @@
             let posy = 10;
             let mass = 1;
 
+            let scale = { x:1,y:1,z:1}; 
+
             // Have to create a 2d array to store the block 
             // to create joint connection for them later
             let blockArray = [];
@@ -163,8 +176,8 @@
             }
             console.log(blockArray);
 
-            for(let z = 0; z<length;z++){  // nested for loop goes though 
-                for(let x = 0; x<width;x++){
+            for( let z = 0; z < length; z++ ){  // nested for loop goes though 
+                for( let x = 0; x < width; x++ ){
                     let block = new THREE.Mesh( new THREE.BoxBufferGeometry(1,1,1), new THREE.MeshPhongMaterial({color: 0x964B00}) );
                     block.position.set(x-3, posy, z-10);
 
@@ -202,6 +215,18 @@
             }
 
             // Now I use the 2d array to add joints between the blocks along the width and block allow the height
+            for( let z = 0; z < blockArray.length -1; z++ ){
+                
+                for ( let x = 0; x < blockArray[z].length - 1; x++){
+                    console.log(blockArray[z]);
+                    let blockPivot1 = new Ammo.btVector3(  );
+                    let blockPivot2 = new Ammo.btVector3( );
+                    // I need to put block bodies in an array instead of the block
+                    let p2p = new Ammo.btPoint2PointConstraint( /*BlockBody1, blockBody2, blockPivot1, blockPivot2*/);
+                    physicsWorld.addConstraint( p2p, false );
+                    
+                }
+            }
 
             for ( let z = 0; z < length; z++){
                 for ( let x = 0; x < width; x++){
