@@ -14,6 +14,8 @@
 
         //variable declaration
         let physicsWorld, controls, scene, camera, renderer, rigidBodies = []
+        let colGroupPlane = 1, colGroupPlankBlocks = 2;
+
         window.addEventListener('resize', onWindowResize, false);
         //Ammojs Initialization
         Ammo().then( Init )
@@ -206,33 +208,43 @@
                     physicsWorld.addRigidBody( body );
                         
                     block.userData.physicsBody = body;
-                    
-                    blockArray[z][x] = block;
-                    
 
-                    // create a joint between the two objects in the physics world.
+                    rigidBodies.push( block );
+
+                    blockArray[z][x] = body;
                 }
             }
 
-            // Now I use the 2d array to add joints between the blocks along the width and block allow the height
+            // This is a nested for loop that iterates through each block in each row and 
+            // adds point to point constraints between them
             for( let z = 0; z < blockArray.length -1; z++ ){
                 
                 for ( let x = 0; x < blockArray[z].length - 1; x++){
-                    console.log(blockArray[z]);
-                    let blockPivot1 = new Ammo.btVector3(  );
-                    let blockPivot2 = new Ammo.btVector3( );
-                    // I need to put block bodies in an array instead of the block
-                    let p2p = new Ammo.btPoint2PointConstraint( /*BlockBody1, blockBody2, blockPivot1, blockPivot2*/);
+                    let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
+                    let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);
+                    let p2p = new Ammo.btPoint2PointConstraint( blockArray[z][x], blockArray[z][x+1], blockPivot1, blockPivot2 );
                     physicsWorld.addConstraint( p2p, false );
                     
                 }
             }
 
-            for ( let z = 0; z < length; z++){
-                for ( let x = 0; x < width; x++){
-                    rigidBodies.push(blockArray[z][x]);
+            // This is a nested for loop that iterates through each block in each column 
+            // and connects them with p2p constraints.
+            // for loop through each width
+            // for loop for every item in height -1
+            // add constraint for first item connected in column connected with the next row.
+
+            for( let z = 0; z < width; z ++){  // need to check if this works.
+                for ( let x = 0; x < length -1; x++ ){
+                    let blockPivot1 = new Ammo.btVector3( 1, 1, scale.x * 0.5 );
+                    let blockPivot2 = new Ammo.btVector3( 1, 1, - scale.x * 0.5);
+                    let p2p = new Ammo.btPoint2PointConstraint( blockArray[z][x], blockArray[z+1][x], blockPivot1, blockPivot2 );
+                    physicsWorld.addConstraint( p2p, false );
                 }
             }
+
+            // need to add mask for the to the block in this project so collides with the physics plane.
+
         }
 
         function createBall(){  // This is just a example function for creating an object in ammo
