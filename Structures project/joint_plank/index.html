@@ -14,7 +14,7 @@
 
         //variable declaration
         let physicsWorld, controls, scene, camera, renderer, rigidBodies = []
-        let colGroupPlane = 1, colGroupPlankBlocks = 2;
+        let colGroupPlane = 1, colGroupPlankBlocks = 1;
 
         window.addEventListener('resize', onWindowResize, false);
         //Ammojs Initialization
@@ -27,8 +27,11 @@
             tmpTrans = new Ammo.btTransform();
             setupPhysicsWorld();
             setupGraphics();
-            createPlank();
+            
             createBlock();
+            createPlank();
+            //createTestBlcok();
+            //createBall();
             renderFrame();
 
         }
@@ -54,8 +57,8 @@
             scene.background = new THREE.Color( 0xbfd1e5 );
 
             //create camera
-            camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.2, 5000 );
-            camera.position.set( 0, 30, 70 );
+            camera = new THREE.PerspectiveCamera( 17, window.innerWidth / window.innerHeight, 0.2, 5000 );
+            camera.position.set( 50, 180, -170 );
             camera.lookAt(new THREE.Vector3(0, 0, 0));
 
             //Add hemisphere light
@@ -154,12 +157,12 @@
             let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
             let body = new Ammo.btRigidBody( rbInfo );
 
-            physicsWorld.addRigidBody( body );
+            physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );
             
         }
 
         function createPlank(){
-            let width = 2;  // This is the width of the plank in inches
+            let width = 4;  // This is the width of the plank in inches
             let length = 5;  // This is the length of the plank in inches
             let posy = 10;
             let mass = 1;
@@ -176,12 +179,11 @@
                     blockArray[i][x] = null;
                 }
             }
-            console.log(blockArray);
 
             for( let z = 0; z < length; z++ ){  // nested for loop goes though 
                 for( let x = 0; x < width; x++ ){
                     let block = new THREE.Mesh( new THREE.BoxBufferGeometry(1,1,1), new THREE.MeshPhongMaterial({color: 0x964B00}) );
-                    block.position.set(x-3, posy, z-10);
+                    block.position.set(-25/*x-3*/, posy, -24/*z-10*/);
 
                     block.castShadow = true;
                     block.receiveShadow = true;
@@ -191,7 +193,7 @@
                     //Ammojs Section
                     let transform = new Ammo.btTransform();
                     transform.setIdentity();
-                    transform.setOrigin( new Ammo.btVector3( x-3, posy, z-10 ) );
+                    transform.setOrigin( new Ammo.btVector3( /*x-3*/-25, posy, -24/*z-10 */) );
                     transform.setRotation( new Ammo.btQuaternion( 0, 0, 0, 1 ) );
                     let motionState = new Ammo.btDefaultMotionState( transform );
 
@@ -205,7 +207,7 @@
                     let body = new Ammo.btRigidBody( rbInfo );
 
 
-                    physicsWorld.addRigidBody( body );
+                    physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane );
                         
                     block.userData.physicsBody = body;
 
@@ -243,9 +245,46 @@
                 }
             }
 
-            // need to add mask for the to the block in this project so collides with the physics plane.
+            // Creating a static block to test if my joints work
 
+            let mass1 = 0;
+
+            //threeJS Section
+            let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0x3c4145}));
+
+            blockPlane.position.set(-3,11,-10);
+            blockPlane.scale.set(1,1,1);
+
+            blockPlane.castShadow = true;
+            blockPlane.receiveShadow = true;
+
+            scene.add(blockPlane);
+
+
+            //Ammojs Section
+            let transform = new Ammo.btTransform();
+            transform.setIdentity();
+            transform.setOrigin( new Ammo.btVector3( -3, 11, -10 ) );
+            transform.setRotation( new Ammo.btQuaternion( 1,1,1 ) );
+            let motionState = new Ammo.btDefaultMotionState( transform );
+
+            let colShape = new Ammo.btBoxShape( new Ammo.btVector3( 1,1,1 ) );
+            colShape.setMargin( 0.05 );
+
+            let localInertia = new Ammo.btVector3( 0, 0, 0 );
+            colShape.calculateLocalInertia( mass1, localInertia );
+
+            let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass1, motionState, colShape, localInertia );
+            let body = new Ammo.btRigidBody( rbInfo );
+
+            physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );
+
+            let blockPivot1 = new Ammo.btVector3( 1, -0.5, 1 );
+            let blockPivot2 = new Ammo.btVector3( 1, 0.5, 1);
+            let p2p = new Ammo.btPoint2PointConstraint( blockPivot1, blockPivot2, body, blockArray[0][0] );
+            physicsWorld.addConstraint( p2p, false );
         }
+
 
         function createBall(){  // This is just a example function for creating an object in ammo
     
@@ -282,7 +321,7 @@
             let body = new Ammo.btRigidBody( rbInfo );
 
 
-            physicsWorld.addRigidBody( body );
+            physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane );
             
             ball.userData.physicsBody = body;
             rigidBodies.push(ball);
