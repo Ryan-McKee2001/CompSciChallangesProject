@@ -179,6 +179,7 @@
                     blockArray[i][x] = null;
                 }
             }
+            console.log(blockArray);
 
             for( let z = 0; z < length; z++ ){  // nested for loop goes though 
                 for( let x = 0; x < width; x++ ){
@@ -193,7 +194,7 @@
                     //Ammojs Section
                     let transform = new Ammo.btTransform();
                     transform.setIdentity();
-                    transform.setOrigin( new Ammo.btVector3( /*x-3*/-25, posy, -24/*z-10 */) );
+                    transform.setOrigin( new Ammo.btVector3( /*x-3*/-26, posy, -26/*z-10 */) );
                     transform.setRotation( new Ammo.btQuaternion( 0, 0, 0, 1 ) );
                     let motionState = new Ammo.btDefaultMotionState( transform );
 
