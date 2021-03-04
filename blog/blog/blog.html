@@ -27,54 +27,221 @@
 
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
-			<h1><a href="index.html">HTML5 Website <span>by Html5webtemplates.co.uk</span></a></h1>	
-				<nav id="nav">
-					<ul>
-						<li><a href="index.html">Home</a></li>
-						<li>
-							<a href="" class="icon fa-angle-down">Layouts</a>
-							<ul>
-								<li><a href="left-sidebar.html">Left Sidebar</a></li>
-								<li><a href="right-sidebar.html">Right Sidebar</a></li>
-								<li><a href="no-sidebar.html">No Sidebar</a></li>
-								<li>
-									<a href="">Submenu</a>
-									<ul>
-										<li><a href="#">Option 1</a></li>
-										<li><a href="#">Option 2</a></li>
-										<li><a href="#">Option 3</a></li>
-										<li><a href="#">Option 4</a></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li><a href="elements.html">Elements</a></li>
-					</ul>
-				</nav>
+			<h1><a href="index.html">Ryan's Blog: <span>Computer Science Challanges</span></a></h1>				
 			</header>
 
 		<!-- Main -->
 			<section id="main" class="wrapper style1">
 				<header class="major">
-					<h2>No Sidebar</h2>
-					<p>Faucibus neque adipiscing mi lorem semper blandit</p>
+					<h2>Simulating Structures Using Three.js/ Ammo.js</h2>
 				</header>
 				<div class="container">
 						
 					<!-- Content -->
 						<section id="content">
 							<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
-							<h3>Dolore Amet Consequat</h3>
-							<p>Aliquam massa urna, imperdiet sit amet mi non, bibendum euismod est. Curabitur mi justo, tincidunt vel eros ullamcorper, porta cursus justo. Cras vel neque eros. Vestibulum diam quam, mollis at magna consectetur non, malesuada quis augue. Morbi tincidunt pretium interdum est. Curabitur mi justo, tincidunt vel eros ullamcorper, porta cursus justo. Cras vel neque eros. Vestibulum diam.</p>
-							<h3>Sed Magna Ornare</h3>
-							<p>In vestibulum massa quis arcu lobortis tempus. Nam pretium arcu in odio vulputate luctus. Suspendisse euismod lorem eget lacinia fringilla. Sed sed felis justo. Nunc sodales elit in laoreet aliquam. Nam gravida, nisl sit amet iaculis porttitor, risus nisi rutrum metus.</p>
-							<ul>
-								<li>Faucibus orci lobortis ac adipiscing integer.</li>
-								<li>Col accumsan arcu mi aliquet placerat.</li>
-								<li>Lobortis vestibulum ut magna tempor massa nascetur.</li>
-								<li>Blandit massa non blandit tempor interdum.</li>
-								<li>Lacinia mattis arcu nascetur lobortis.</li>
-							</ul>
+							<h2>Introduction</h2>
+							<p>
+								This blog covers my first-year project for computer
+								science challenges at Queen's University Belfast. This module pushes you
+								to learn and produce a project using technology you have
+								never used before challenging you to go out of your comfort zone in
+								learning new technologies and to solve problems you have never solved
+								before. For this module I was assigned the Structures project as a part of
+								my topic choice of robotics and manufacturing because I have a personal interest in this area.
+							</p>
+							<p>
+								<u><strong>Project Objective:</strong></u>
+							</p>
+							<p>
+								<strong>
+									Model cheaply purchasable components e.g., 2x4 planks, nuts, and bolts
+									and create them in three.js/bullet with appropriate physics properties,
+									including weight, friction. Objects should include costs and links for
+									purchase.
+								</strong>
+							</p>
+							<p>
+								<strong>
+									Create models of physical parts with appropriate bending, twisting and
+									breaking effects (a model that they can occur) so that structures of
+									suitable strength can be developed and limitations under forces can be
+									incorporated into the design of machines.
+								</strong>
+							</p>
+							<p>
+								<strong>
+									Creating models of physical attachments e.g. nuts and bolts, nails,
+									glue, etc. that have parameters and can replicate plausible behaviors
+									when subject to physical forces within a physics engine (including
+									vibration)
+								</strong>
+							</p>
+							<br/>
+							<p>
+								<u>Three.js and ammo.js</u>
+							</p>
+							<p>
+								To carry out this task I was assigned to use three.js and ammo.js; both
+								JavaScript libraries; Three.js is used to create 3d graphics in a web
+								browser and ammo.js to create a physics world these two libraries can be
+								used in conjunction to display bodies I want to simulate and show how they
+								are affected by physics in the physics world I create. This task was
+								overwhelming at first for me as I was not only new to physics and graphics
+								engines but also, I had never used JavaScript and have no background in
+								robotics and manufacturing, So as a prerequisite I had to learn this
+								JavaScript. To learn this language I followed a YouTube series created by a
+								popular YouTube called mosh
+								<a href="https://www.youtube.com/watch?v=W6NZfCO5SIk">
+									https://www.youtube.com/watch?v=W6NZfCO5SIk
+								</a>
+								, This tutorial not only got me set up on the basics of JavaScript like for
+								loops if statements and creating objects. I picked up the language quickly
+								because of my experience in other programming languages like C# and java
+								which have similarities to JavaScript and through the sample projects I was
+								implementing to learn both the libraries for this project. however, I found
+								out during the duration of my project the JavaScript is a little harder
+								than showed in the tutorial due to some of the basic functions that other
+								languages had built in which I had to implement myself like 2d arrays this
+								tutorial also introduced me to the IDE I would be using for the duration of
+								the project visual studio code. I had never really used this ide before, so
+								I also had to do some tutorials learning it as well it was not that hard,
+								and I have ended up with visual studio code being one of my favourite ides.
+								After getting comfortable with both JavaScript and visual studio code I had
+								to move onto the next step learning three.js luckily three.js is a widely
+							used library with many examples and tutorials (    <a href="https://threejs.org/">https://threejs.org/</a> ) which I made use
+								of. For me I have a preference for learning from YouTube tutorials so I
+								found (
+								<a
+									href="https://www.youtube.com/watch?v=YKzyhcyAijo&amp;list=PLRtjMdoYXLf6mvjCmrltvsD0j12ZQDMfE"
+								>
+									https://www.youtube.com/watch?v=YKzyhcyAijo&amp;list=PLRtjMdoYXLf6mvjCmrltvsD0j12ZQDMfE
+								</a>
+								) this library was easy to get used to for this reasons I created some
+								examples like creating blocks and so on. The next step I then moved on
+								learning the ammo.js library the issue I found with ammo.js is that unlike
+								three.js there is hardly any documentation examples and tutorials to use I
+								struggled at first and found it overwhelming but through my searching, I
+								found a good tutorial which covered the basic well of ammo.js constraints,
+								objects, collision detection, and filtering.
+							</p>
+							<p>
+								<u>Three.js</u>
+							</p>
+							<p>
+								<u>Getting started with ammo.js.</u>
+							</p>
+							<p>
+								Before starting to add object and cool stuff you need to first define the
+								physics world in all of the sample projects this was the main similarity
+								which I done in all.
+							</p>
+							<p>
+								At first looking at examples of ammo.js projects and how they create the
+								world the statements made no sense to me at all as I could not understand
+								what the statements function calls for this creating the world function
+								were doing. It took a while to get a grasp on what was happening but
+								luckily you have me to explain these concepts and save you from the pain I
+								dealt with trying to figure out what they did.
+							</p>
+							<p>
+								<u>Ammo.js concepts</u>
+							</p>
+							<p>
+								During my learning experience I covered some basic concepts of ammo.js in
+								sequential order. These concepts that I put into practice at the start of
+								my project through the use of some sample projects ended up becoming
+								fundamental for the development of my structures project, I am going to go
+								over the ammo.js concepts I learned using some sample projects I created
+								which you can access through this github link: (
+								<a href="https://github.com/Ryan-McKee2001/three.js-ammo.js-blog-examples">
+									https://github.com/Ryan-McKee2001/three.js-ammo.js-blog-examples
+								</a>
+								) you can take and use to help you get started using and understanding
+								ammo.js and follow along with my all my code is commented out in addition
+								to the information in the blog so hopefully it should help you a lot with
+								getting started using ammo.js. The projects I have created so far mainly
+								focused on four main concepts:
+							</p>
+							<p>
+								- Rigid bodies
+							</p>
+							<p>
+								- Soft bodies
+							</p>
+							<p>
+								- Collision detection and filtering
+							</p>
+							<p>
+								- Constraints
+							</p>
+							<p>
+								<u>Rigid bodies</u>
+							</p>
+							<p>
+								Bodies in ammo.js are called collision objects or more commonly rigid
+								bodies. Rigid bodies are the objects in the simulation which move, collide
+								has mass and can have impulses applied to it.<u></u>
+							</p>
+							<p>
+								There are three types of rigid bodies and many-body shapes can be
+								implemented in ammo.js. The three types of ammo.js bodies are:
+							</p>
+							<p>
+								- <u>Static Rigid bodies</u> – These bodies have a fixed position
+								throughout the physics simulation and cannot be moved.
+							</p>
+							<p>
+								- <u>Kinematic Rigid bodies</u> – These bodies are not affected by the
+								physics of the Ammo.js world but are can be animated during the physics
+								simulation.
+							</p>
+							<p>
+								- <u>Dynamic rigid bodies</u> – These are the most intensive rigid body
+								type in ammo.js, these bodies are fully affected by the physics of the
+								world.
+							</p>
+							<p>
+								Now we will show examples of each of these body types in code and how they
+								work.
+							</p>
+							<p>
+								<u>Static rigid bodies</u>
+							</p>
+							<p>
+								Static rigid bodies are defined similarly to how we would define a dynamic
+								or Kinematic rigid-body the difference when creating this body is that we
+								set the mass to 0, This makes the body unmovable in the simulation and
+								therefore static as well, Because it is static we do not need to add it to
+								the rigid bodies array we typically define at the start of the script as we
+								will not be moving this object throughout the physics simulation so we will
+								not need to update the three.js representation of this static body in the
+								animation loop. In this example we create a static body as a cube object
+								which will be used as the plane for the world to be based.
+							</p>
+							<p>
+								<u>Kinematic Rigid bodies</u>
+							</p>
+							<p>
+								This body has a mass of 0 however, we add it to the rigid bodies array as
+								we will be updating its position in the physics world thus also updating
+								the three.js representation in the render loop function. For this example,
+								I animated the body by just changing its z position by +0.03 for 10 frames
+								then updating the blocks position by +0.03 on the x for another 10 frames
+								repeating this process but with -0.03 for 10 frames on the z and x
+								positions. There are many other things you could do like animate the block
+								when a key is pressed by the user and so on, but I will not be covering
+								that here.
+							</p>
+							<p>
+								Dynamic Rigid bodies
+							</p>
+							<p>
+								This is the dynamic body of the program which the other two types of rigid
+								body are based on, In this example, I set the mass of the rigid body to be
+								1 therefore this object will be affected by the ammo.js physics world. I
+								also added this object to the rigid bodies array
+							</p>
 						</section>
 								
 				</div>
