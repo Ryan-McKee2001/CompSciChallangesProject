@@ -22,18 +22,13 @@
         
         function Init()
         {
-            
             //code goes here
             tmpTrans = new Ammo.btTransform();
             setupPhysicsWorld();
             setupGraphics();
-            
             createBlock();
             createPlank();
-            //createTestBlcok();
-            //createBall();
             renderFrame();
-
         }
     
         function setupPhysicsWorld()
@@ -162,8 +157,8 @@
         }
 
         function createPlank(){
-            let width = 4;  // This is the width of the plank in inches
-            let length = 5;  // This is the length of the plank in inches
+            let width = 2;  // This is the width of the plank in inches
+            let length = 4;  // This is the length of the plank in inches
             let posy = 10;
             let mass = 1;
 
@@ -184,7 +179,7 @@
             for( let z = 0; z < length; z++ ){  // nested for loop goes though 
                 for( let x = 0; x < width; x++ ){
                     let block = new THREE.Mesh( new THREE.BoxBufferGeometry(1,1,1), new THREE.MeshPhongMaterial({color: 0x964B00}) );
-                    block.position.set(-25/*x-3*/, posy, -24/*z-10*/);
+                    block.position.set(x-3, posy, z-10);
 
                     block.castShadow = true;
                     block.receiveShadow = true;
@@ -194,7 +189,7 @@
                     //Ammojs Section
                     let transform = new Ammo.btTransform();
                     transform.setIdentity();
-                    transform.setOrigin( new Ammo.btVector3( /*x-3*/-26, posy, -26/*z-10 */) );
+                    transform.setOrigin( new Ammo.btVector3( x-3, posy, z-10 ) );
                     transform.setRotation( new Ammo.btQuaternion( 0, 0, 0, 1 ) );
                     let motionState = new Ammo.btDefaultMotionState( transform );
 
@@ -245,45 +240,6 @@
                     physicsWorld.addConstraint( p2p, false );
                 }
             }
-
-            // Creating a static block to test if my joints work
-
-            let mass1 = 0;
-
-            //threeJS Section
-            let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0x3c4145}));
-
-            blockPlane.position.set(-3,11,-10);
-            blockPlane.scale.set(1,1,1);
-
-            blockPlane.castShadow = true;
-            blockPlane.receiveShadow = true;
-
-            scene.add(blockPlane);
-
-
-            //Ammojs Section
-            let transform = new Ammo.btTransform();
-            transform.setIdentity();
-            transform.setOrigin( new Ammo.btVector3( -3, 11, -10 ) );
-            transform.setRotation( new Ammo.btQuaternion( 1,1,1 ) );
-            let motionState = new Ammo.btDefaultMotionState( transform );
-
-            let colShape = new Ammo.btBoxShape( new Ammo.btVector3( 1,1,1 ) );
-            colShape.setMargin( 0.05 );
-
-            let localInertia = new Ammo.btVector3( 0, 0, 0 );
-            colShape.calculateLocalInertia( mass1, localInertia );
-
-            let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass1, motionState, colShape, localInertia );
-            let body = new Ammo.btRigidBody( rbInfo );
-
-            physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );
-
-            let blockPivot1 = new Ammo.btVector3( 1, -0.5, 1 );
-            let blockPivot2 = new Ammo.btVector3( 1, 0.5, 1);
-            let p2p = new Ammo.btPoint2PointConstraint( blockPivot1, blockPivot2, body, blockArray[0][0] );
-            physicsWorld.addConstraint( p2p, false );
         }
 
 
