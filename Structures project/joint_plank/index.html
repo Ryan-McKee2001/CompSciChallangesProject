@@ -8,21 +8,22 @@
 <body>
     <script src="js/three.js"></script>
     <script src="js/ammo.js"></script>
-    <script src = "js/OrbitControls.js"></script>
    
     <script>
 
         //variable declaration
-        let physicsWorld, controls, scene, camera, renderer, rigidBodies = []
-        let colGroupPlane = 1, colGroupPlankBlocks = 1;
+        let physicsWorld, controls, scene, camera, renderer;  // Three.js variables
+        let rigidBodies = [];  // Ammo.js variables 
+        let colGroupPlane = 1, colGroupPlankBlocks = 1;  // Ammo.js collision groups declaration
 
-        window.addEventListener('resize', onWindowResize, false);
-        //Ammojs Initialization
-        Ammo().then( Init )
+        window.addEventListener('resize', onWindowResize, false); // Calls a function
+        // which resizes the renderer size when the webpage size is changed.
+
+        //Ammojs Initialisation
+        Ammo().then( Init )  // calls the Init function on start up
         
-        function Init()
+        function Init()  // This function is called on start up and calls all the main program functions
         {
-            //code goes here
             tmpTrans = new Ammo.btTransform();
             setupPhysicsWorld();
             setupGraphics();
@@ -31,18 +32,26 @@
             renderFrame();
         }
     
-        function setupPhysicsWorld()
+        function setupPhysicsWorld()  // This function creates the ammo.js physics world
         {
-            let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),
-                dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),
-                overlappingPairCache = new Ammo.btDbvtBroadphase(),
+            let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),  // this attribute sets the collision configuration which allows you to tune
+                // the algorithms used for the full collision detection
+                dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),   // The collision dispatcher filters overlapping broadphase proxies so that the collisions 
+                //are not processed by the rest of the system.
+                overlappingPairCache = new Ammo.btDbvtBroadphase(),   // Broadphase compiles a list of pairs of colliding objects.
                 solver = new Ammo.btSequentialImpulseConstraintSolver();
+                 // solver is what causes the objects to interact properely it takes into account gravity,
+                //  game logic supplied forces, collisions, and hinge constraints.
 
             physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
             physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
+             // Finally btDiscreteDynamicsWorld takes all the parameters defined above to create a physics world. 
+                // and set gravity takes 3 parameters, the first and third can be thought of as wind and the second parameters can be thought
+                // of as the gravitational force, that is why in this example the second parameter is equal to -10 as this is the same as earths
+               // gravitational force.
         }
         
-        function setupGraphics()
+        function setupGraphics()  // This function creates the three.js graphics world
         {
             //create clock for timing
             clock = new THREE.Clock();
@@ -100,29 +109,22 @@
             renderer.setSize(window.innerWidth,window.innerHeight);
         }
 
-        function setUpControls(){
-            const controls = new THREE.OrbitControls( camera, renderer.domElement );
-            controls.addEventlistener( 'change', render );
-            controls.minDistance = 20;
-            controls.maxDistance = 50;
-            controls.maxPolarAngle = Math.PI/2;
-        }
-
-        function renderFrame()
+        // This is a recursive function that updates the graphics for every browser frame.
+        function renderFrame() 
         {
             let deltaTime = clock.getDelta();
-            //controls.update();
             updatePhysics(deltaTime);
             renderer.render( scene, camera );
             requestAnimationFrame( renderFrame );
         }
         
+        // This function creates the static rigid body which will be the plane the world is based on.
         function createBlock()
         {
-            let pos = {x: 0, y: 0, z: 0};
-            let scale = {x: 50, y: 2, z: 50};
-            let quat = {x: 0, y: 0, z: 0, w: 1};
-            let mass = 0;
+            let pos = {x: 0, y: 0, z: 0};  // position
+            let scale = {x: 50, y: 2, z: 50};  // scale
+            let quat = {x: 0, y: 0, z: 0, w: 1};  // rotation
+            let mass = 0;  // static mass
 
             //threeJS Section
             let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0x3c4145}));
@@ -152,32 +154,38 @@
             let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
             let body = new Ammo.btRigidBody( rbInfo );
 
-            physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );
+            physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );  // adds the block plane to the colGroupPlane
+            // collision group and sets it to collide with col, colGroupPlankBlocks
             
         }
 
+        // This function creates the plank simulation
         function createPlank(){
             let width = 2;  // This is the width of the plank in inches
             let length = 4;  // This is the length of the plank in inches
-            let posy = 10;
+            let posy = 10;  
             let mass = 1;
 
-            let scale = { x:1,y:1,z:1}; 
+            let scale = { x:1,y:1,z:1}; // scale for each block
 
-            // Have to create a 2d array to store the block 
-            // to create joint connection for them later
-            let blockArray = [];
+            let blockArray = [];  // This will be the 2d array for the block objects to be stored
 
+            // In javascript 2d arrays are not a built in therefore
+            // I need to create my own.
+            // This for loop creates the same amount of arrays inside blockArray
+            // as the length and the same amount of elements in each array as the width
             for (let i = 0; i < length; i++){
                 blockArray[i] = [];
                 for ( let x = 0; x < width; x++){
                     blockArray[i][x] = null;
                 }
             }
-            console.log(blockArray);
 
-            for( let z = 0; z < length; z++ ){  // nested for loop goes though 
-                for( let x = 0; x < width; x++ ){
+            // the nested for loop creates a block for every element in each of the 
+            // arrays within block array.
+            for( let z = 0; z < length; z++ ){  // loops up will it is equal to length
+                for( let x = 0; x < width; x++ ){  // loops till it is equal to width
+                    // three.js section
                     let block = new THREE.Mesh( new THREE.BoxBufferGeometry(1,1,1), new THREE.MeshPhongMaterial({color: 0x964B00}) );
                     block.position.set(x-3, posy, z-10);
 
@@ -203,20 +211,22 @@
                     let body = new Ammo.btRigidBody( rbInfo );
 
 
-                    physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane );
+                    physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane ); // sets the block to be apart of the
+                    // colGroupPlankBlocks collision group set to collide with colGroupPlane
                         
                     block.userData.physicsBody = body;
 
-                    rigidBodies.push( block );
+                    rigidBodies.push( block );  // adds the block to the rigid body array so it can
+                    // be animated in the renderer.
 
-                    blockArray[z][x] = body;
+                    blockArray[z][x] = body;  // sets the current block body to the current 
+                    // block column and row in the blockArray
                 }
             }
 
             // This is a nested for loop that iterates through each block in each row and 
             // adds point to point constraints between them
             for( let z = 0; z < blockArray.length -1; z++ ){
-                
                 for ( let x = 0; x < blockArray[z].length - 1; x++){
                     let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
                     let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);
@@ -231,9 +241,8 @@
             // for loop through each width
             // for loop for every item in height -1
             // add constraint for first item connected in column connected with the next row.
-
-            for( let z = 0; z < width; z ++){  // need to check if this works.
-                for ( let x = 0; x < length -1; x++ ){
+            for( let z = 0; z < blockArray.length - 1; z ++){  // need to check if this works.
+                for ( let x = 0; x < blockArray[z] - 1; x++ ){
                     let blockPivot1 = new Ammo.btVector3( 1, 1, scale.x * 0.5 );
                     let blockPivot2 = new Ammo.btVector3( 1, 1, - scale.x * 0.5);
                     let p2p = new Ammo.btPoint2PointConstraint( blockArray[z][x], blockArray[z+1][x], blockPivot1, blockPivot2 );
@@ -241,51 +250,10 @@
                 }
             }
         }
-
-
-        function createBall(){  // This is just a example function for creating an object in ammo
-    
-            let pos = {x: 0, y: 20, z: 0};
-            let radius = 2;
-            let quat = {x: 0, y: 0, z: 0, w: 1};
-            let mass = 1;
-
-            //threeJS Section
-            let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0xff0505}));
-
-            ball.position.set(pos.x, pos.y, pos.z);
-            
-            ball.castShadow = true;
-            ball.receiveShadow = true;
-
-            scene.add(ball);
-
-
-            //Ammojs Section
-            let transform = new Ammo.btTransform();
-            transform.setIdentity();
-            transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
-            transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
-            let motionState = new Ammo.btDefaultMotionState( transform );
-
-            let colShape = new Ammo.btSphereShape( radius );
-            colShape.setMargin( 0.05 );
-
-            let localInertia = new Ammo.btVector3( 0, 0, 0 );
-            colShape.calculateLocalInertia( mass, localInertia );
-
-            let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
-            let body = new Ammo.btRigidBody( rbInfo );
-
-
-            physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane );
-            
-            ball.userData.physicsBody = body;
-            rigidBodies.push(ball);
-        }
-
-                            
-        function updatePhysics( deltaTime )
+        
+        // This function steps through every rigid body and updates the correlating three.js
+        // object position. 
+        function updatePhysics( deltaTime )  
         {
             // Step world
             physicsWorld.stepSimulation( deltaTime, 10 );

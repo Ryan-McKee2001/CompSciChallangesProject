@@ -53,9 +53,9 @@
 								before. For this module, I was assigned the Structures project as a part of
 								the topic choice of robotics and manufacturing topic I have an interest in.
 							</p>
-							<p>
+							<p><strong>
 								<u>Project objective:</u>
-							</p>
+							</strong></p>
 							<p>
 								<strong>
 									Model cheaply purchasable components e.g., 2x4 planks, nuts and bolts
@@ -120,7 +120,8 @@
 								components starting with 2*4 planks using ammo and three. So far I have
 								made some progress but the main idea for creating the planks for the
 								project is to use dynamic rigid bodies connected with point 2 point
-								constraints connecting each row of planks to the other columns and connect
+								constraints (constraints are the connectors between bodies in ammo.js like joints in real life) 
+								connecting each row of planks to the other columns and connect
 								the columns to the rows of dynamic body, This will allow me to create
 								bending for the object twisting and potentially breaking when certain
 								forces are applied to the plank by creating constraints for the p2p for
@@ -149,19 +150,33 @@
 								<u>Setting up the library’s and ide</u>
 							</p>
 							<p>
-								Starting off creating my simulation I, of course, had to set up the
+								Starting off creating my simulation I had to set up the
 								workspace to do this I created a folder for my project which contained an
 								index.html file and js folder containing the libraries ammo.js and three.js
-								that I would be using to create my project.
+								that I would be using to create my project. I then installed <a href="https://code.visualstudio.com/download">
+								vs code</a> and opened the project. From there I began setting up the html page by
+								defining the main Init function and initialising ammo.js by doing the statement 
+								Ammo().then( Init );
 							</p>
+							<figure>
+								<pre>
+<code contenteditable spellcheck="false">  
+Ammo().then(Init);  // Initialises ammo.js 
+function Init(){  // This will contain all calls for your program
+
+}
+								  </code>
+								</pre>
+							  </figure>
 							<p>
 								<u>Creating the three.js world</u>
 							</p>
 							<p>
 								Creating the three.js world was just a matter of creating a function
 								containing statements setting up the scene, camera, renderer, and some
-								lighting.
+								lighting and then calling that function in the Init function.
 							</p>
+							<a href="#" class="image fit"><img src="images/setting up graphics.png" alt="" /></a>
 							<p>
 								<u>Creating the ammo.js world</u>
 							</p>
@@ -169,14 +184,16 @@
 								To create the ammo.js I had to create another function containing the
 								declaration of parameters for the statement creating the physics world.
 							</p>
+							<a href="#" class="image fit"><img src="images/setting up physics world.png" alt="" /></a>
 							<p>
 								<u>Creating the static world plane</u>
 							</p>
 							<p>
-								Creating the plane, I just created a static rigid body a cube object with a
+								Creating the plane, I just created a static rigid body cube object with a
 								big x and z value and 1 for the y axis representing the height and I set
 								the mass to 0 to make it static.
 							</p>
+							<a href="#" class="image fit"><img src="images/static plane function.png" alt="" /></a>
 							<p>
 								<u>Animating the rigid bodies in the world</u>
 							</p>
@@ -188,6 +205,8 @@
 								render loop rendered the scene and camera updating the world on the browser
 								to match that in the physics world.
 							</p>
+							<a href="#" class="image fit"><img src="images/render frame function.png" alt="" /></a>
+							<a href="#" class="image fit"><img src="images/update physics function.png" alt="" /></a>
 							<p>
 								<u>Creating the plank </u>
 							</p>
@@ -212,18 +231,23 @@
 								the module lecturer after I could not figure out how I would add a
 								connection between each of the rigid bodies making up the planks.
 							</p>
+							<a href="#" class="image fit"><img src="images/create plank variable declaration.png" alt="" /></a>
 							<p>
-								After adding each of the blocks to the physics world and graphics world I
-								added their bodies to the 2d array with their positions in the array
-								correlating with their positions in the world relative to the other blocks
-								making up the plank.
+								After creating the 2d array the next problem was creating and adding block for the 
+								plank to the 2d array to do this I created a nested for loop that went through every
+								array in BlockArray and for every element created a block with the same size defined
+								in the variable declaration but for the position of the block I used the x variable 
+								for the x vector and the z variable for the z vector declared in the 2 for loops.
 							</p>
+							<a href="#" class="image fit"><img src="images/creating planks for loop.png" alt="" /></a>
 							<p>
-								Next, I created the connections between the rigid bodies to do this I
-								started with doing a nested for loop which for each column iterated through
-								each of the rows connecting them and created another nested for loop which
-								iterated through each row connecting each of the columns.<u></u>
+								Next, I created the connections between the rigid bodies in the blockArray to do this I
+								started with doing a nested for loop which for each array in block array iterated through
+								each of the elements connecting them so that all the rows were connected together and
+								I created another nested for loop which iterated through each element connecting each of the arrays in block array.
+								therefore connecting the columns to each other connectinh everything together.<u></u>
 							</p>
+							<a href="#" class="image fit"><img src="images/columns and rows p2p constraints.png" alt="" /></a>
 							<p>
 								<u>Adding collision constraints</u>
 							</p>
@@ -235,11 +259,14 @@
 								I created 2 collision groups for my project and set the collision group of
 							the static plane to colGroup1 and the blocks to colGroup2.    <strong><u></u></strong>
 							</p>
+							<a href="#" class="image fit"><img src="images/col Group declaration.png" alt="" /></a>
+							<a href="#" class="image fit"><img src="images/staticplane col group.png" alt="" /></a>
+							<a href="#" class="image fit"><img src="images/plank col group.png" alt="" /></a>
 							<p>This is the product so far, Not that breath taking but it works for now.</p>
 							<a href="#" class="image fit"><img src="images/final product.png" alt="" /></a>
 							<p>
 								<strong>
-									Thanks for reading my blog if you want to get this project up and
+									<u>Thanks for reading my blog</u>u</br> if you want to get this project up and
 									running with visual studio code IDE I suggest you download the project
 									folder off GitHub and then follow this tutorial:
 									<a href= "https://docs.microsoft.com/en-us/visualstudio/ide/develop-code-in-visual-studio-without-projects-or-solutions?view=vs-2019">

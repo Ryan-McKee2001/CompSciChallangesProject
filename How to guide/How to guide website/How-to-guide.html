@@ -43,9 +43,6 @@
 						<strong><u>How to get Started with ammo.js/three.js</u></strong>
 					</h2>		
 					<p>
-						<strong><u>Getting started with three.js and ammo.js</u></strong>
-					</p>
-					<p>
 						<strong><u>Introduction</u></strong>
 					</p>
 					<p><strong>
@@ -232,7 +229,7 @@
 							initial-scale=1.0"&gt;
 						</div>
 						<div>
-							&lt;title&gt;Setting up world&lt;/title&gt;
+							&lt;title&gt;How to guide&lt;/title&gt;
 						</div>
 						<div>
 							&lt;/head&gt;
@@ -241,15 +238,15 @@
 							&lt;body&gt;
 						</div>
 						<div>
-							&lt;script src="js/three.js"&gt;&lt;/script&gt;
+							&lt;script src="js/three.js"&gt;&lt;/script&gt; // this imports the three.js library 
 						</div>
 						<div>
-							&lt;script src="js/ammo.js"&gt;&lt;/script&gt;
+							&lt;script src="js/ammo.js"&gt;&lt;/script&gt; // imports ammo.js library
 						</div>
 						<div>
 						</div>
 						<div>
-							&lt;script&gt;
+							&lt;script&gt;  // This will contain the program
 						</div>
 						<div>
 							&lt;/script&gt;
@@ -267,7 +264,18 @@
 							init short for initiate ) which will contain all the main function
 							calls and enter the statement Ammo().then( Init ); which will initiate
 							ammo.
+							Your script should look like this: 
 						</strong>
+						<figure>
+							<pre>
+	<code contenteditable spellcheck="false">  
+	Ammo().then(Init);  // Initialises ammo.js 
+	function Init(){  // This will contain all calls for your program
+
+	}
+							  </code>
+							</pre>
+						  </figure>
 					</h3>
 					<p><strong>
 						After this you need to declare the global variables for the program, so at
@@ -277,8 +285,8 @@
 						<pre>
 <code contenteditable spellcheck="false">  
 //variable declaration
-let physicsWorld, controls, scene, camera, renderer; //three.js variables
-let rigidBodies = [];  // ammo.js variables
+let physicsWorld, controls, scene, camera, renderer; //three.js variables; 
+let rigidBodies = [];  // ammo.js variables; stores all rigid bodies created
 }  
 						  </code>
 						</pre>
@@ -303,7 +311,7 @@ let rigidBodies = [];  // ammo.js variables
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
-function setupGraphics()
+function setupGraphics()  // This function defines the camera, scene, renderer and lighting attributes for the three.js scene
 {
 	//create clock for timing
 	clock = new THREE.Clock();
@@ -373,12 +381,26 @@ function setupGraphics()
 function setupPhysicsWorld()
 {
 	let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),
+	// this attribute sets the collision configuration which allows you to tune
+	// the algorithms used for the full collision detection.
+
 		dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),
+		// The collision dispatcher filters overlapping broadphase proxies so that the collisions 
+		//are not processed by the rest of the system.
+
 		overlappingPairCache = new Ammo.btDbvtBroadphase(),
+		// Broadphase compiles a list of pairs of colliding objects.
+
 		solver = new Ammo.btSequentialImpulseConstraintSolver();
+		// solver is what causes the objects to interact properely it takes into account gravity,
+		//  game logic supplied forces, collisions, and hinge constraints.
 
 	physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-	physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
+	physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));  // -10 represents earths gravitational force rounded up from 9.8
+	// Finally btDiscreteDynamicsWorld takes all the parameters defined above to create a physics world. 
+	// and set gravity takes 3 parameters, the first and third can be thought of as wind and the second parameters can be thought
+	// of as the gravitational force, that is why in this example the second parameter is equal to -10 as this is the same as earths
+	// gravitational force.
 }
 						  </code>
 						</pre>
@@ -409,6 +431,57 @@ function renderFrame()
 						  </code>
 						</pre>
 					  </figure>
+					  <h3>
+						<strong>Updating the physics</strong>
+					</h3>
+					<figure>
+						<figcaption>
+							<strong>
+								This is the final function we are going to be adding to the program
+								the updatePhysics function to set up the world. This function essentially steps through
+								every rigid body in the rigid bodies array and updates the position
+								and rotation of the three.js object depending of the position and
+								rotation of the objects ammo.js counterpart object.
+							</strong>
+						</figcaption>
+					</figure>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function renderFrame(){  // This is a recursive method so for every frame that passes this function is called again.
+	let deltaTime = clock.getDelta();
+	updatePhysics( deltaTime );  //This calls the update physics method passing delta time as a parameter.
+	renderer.render( scene, camera );  //renderer takes the current scene and camera and renders it.
+	requestAnimationFrame( renderFrame ); // when a new frame occurs the function is then called again.
+}
+						  </code>
+						</pre>
+					  </figure>
+					<h3>
+						<strong>Updating the render frame function</strong>
+					</h3>
+					<figure>
+						<figcaption>
+							<strong>
+								The next thing we have to do is update our render frame function so
+								that is updates the physics of objects in its scene. to do this we
+								define a new variable deltaTime and call the update physics
+								function passing delta time as a parameter.
+							</strong>
+						</figcaption>
+					</figure>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function renderFrame(){  // This is a recursive method so for every frame that passes this function is called again.
+	let deltaTime = clock.getDelta();
+	updatePhysics( deltaTime );  //This calls the update physics method passing delta time as a parameter.
+	renderer.render( scene, camera );  //renderer takes the current scene and camera and renders it.
+	requestAnimationFrame( renderFrame ); // when a new frame occurs the function is then called again.
+}
+						  </code>
+						</pre>
+					  </figure>
 					<p>
 						<strong>
 							Now if you open the live server in vs code you should see just a blue screen this 
@@ -421,8 +494,6 @@ function renderFrame()
 						</strong>
 					</p>
 					<a href="#" class="image fit"><img src="images/blue screen.png" alt="" /></a>
-
-
 					<p>
 						<strong><u>Ammo.js programming concepts tutorial</u></strong>
 					</p>
@@ -498,10 +569,10 @@ physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );
 						  </code>
 						</pre>
 					  </figure>
-					<p>
-						Now we just must call this function in the init function for it to show up
+					<p><strong><u>
+						Now we just must call the functions in the init function for it to show up
 						in the world.
-					</p>
+					</u></strong></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -516,10 +587,10 @@ function Init()
 						  </code>
 						</pre>
 					  </figure>
-					<p>
+					<p><strong>
 						Now the static rigid body will show up on your screen.
-					</p>
-
+					</strong></p>
+					<a href="#" class="image fit"><img src="images/static rigid body image.png" alt="" /></a>
 					<p>
 						<strong><u>Dynamic rigid body</u></strong>
 					</p>
@@ -580,11 +651,12 @@ function createBall(){  // This is just a example function for creating an objec
 						  </code>
 						</pre>
 					  </figure>
-	
-					<p>
+					  <p><strong>Now if you open the project in the live server you should see the dynamic rigid body.</strong></p>
+					  <a href="#" class="image fit"><img src="images/dynamic rigid body object.png" alt="" /></a>
+					<p><strong><u>
 						Kinematic rigid bodies
-					</p>
-					<p>
+					</u></strong></p>
+					<p><strong>
 						To create this body, we are going to create an ammo.js block and three.js
 						block with the same dimensions and add a 0 mass to the block, this will
 						make the block static but for this body, we will add it to our rigid bodies
@@ -593,7 +665,7 @@ function createBall(){  // This is just a example function for creating an objec
 						bodies array so we can animate it in the render loop. There are multiple
 						options for animating a kinematic rigid body you could use keybinds to move
 						it. Or you could animate it by linking it up with a clock
-					</p>
+					</strong></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -638,20 +710,19 @@ function createKinematicBody(){  // This is just a example function for creating
 						  </code>
 						</pre>
 					  </figure>
-
-					<p>
+					<p><strong><u>
 						Constraints
-					</p>
-					<p>
+					</u></strong></p>
+					<p><strong>
 						To start off making constraints we are going to define a function in our
 						program called create constraints, in this function we are going to define
 						two objects a ball and a cube object within proximity. These two objects
 						will be the two that we connect with the constraints.
-					</p>
-					<p>
+					</strong></p>
+					<p><strong><u>
 						P2P constraint
-					</p>
-					<p>
+					</u></strong></p>
+					<p><strong>
 						Creating a point-to-point constraint is simpler than you may believe at
 						first, to do this you first need to define at least 2 objects that you want
 						to connect once this is done you can start creating the joint between the
@@ -669,7 +740,7 @@ function createKinematicBody(){  // This is just a example function for creating
 						sphere pivot why give the -radius for the y axis and for the block we give
 						half the x-axis for the other pivot. We then pass these two values into the
 						p2p function. Finally, we can pass this pivot into the scene.
-					</p>
+					</strong></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -770,9 +841,9 @@ function createConstraint(){
 						</pre>
 					  </figure>
 	
-					<p>
+					<p><strong>
 						Now we will call this function in the init method
-					</p>
+					</strong></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -788,20 +859,20 @@ function Init()
 						  </code>
 						</pre>
 					  </figure>
-					<p>
+					<p><strong>
 						Now you should see this on the screen.
-					</p>
-
-					<p>
+					</strong></p>
+					<a href="#" class="image fit"><img src="images/p2p Constraint.png" alt="" /></a>
+					<p><strong>
 						<u>Collision detection</u>
-					</p>
-					<p>
+					</strong></p>
+					<p><strong>
 						For this example, we be showing an example of collision detection by using
 						collision groups. Collision groups allow us to choose which objects in the
 						physics world collide with each other. For this example we will be creating
 						three collision groups, we will do this by first adding this code to the
 						global variable declarations at the top of the script.
-					</p>
+					</strong></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -809,10 +880,10 @@ let colGroupPlane = 1, colGroupRedBall = 1, colGroupGreenball = 2;
 						  </code>
 						</pre>
 					  </figure>
-					<p>
+					<p><strong>
 						after this we will create two functions one for creating the green ball and
 						the other for creating the red ball.
-					</p>
+					</strong></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -895,16 +966,16 @@ function createRedBall(){  // creating the red ball
 						  </code>
 						</pre>
 					  </figure>
-					<p>
+					<p><strong>
 						Now finally to complete this part of the tutorial we will now add the
 						collision groups to each of the physics bodies. We do this by editing the
 						physicsWorld.addRigidBody function. We will be adding to these parameters
 						both the collision group that the body is in and the collision group it
 						should be interacting with.
-					</p>
-					<p>
+					</strong></p>
+					<p><strong><u>
 						Create block function.
-					</p>
+					</u></strong></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -912,9 +983,9 @@ physicsWorld.addRigidBody( body, colGroupPlane, colGroupGreenball );
 						  </code>
 						</pre>
 					  </figure>
-					<p>
+					<p><strong><u>
 						Green ball function
-					</p>
+					</strong></u></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -922,9 +993,9 @@ physicsWorld.addRigidBody( body, colGroupGreenball, colGroupPlane );
 						  </code>
 						</pre>
 					  </figure>
-					<p>
+					<p><strong>
 						Red ball function
-					</p>
+					</strong></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -932,11 +1003,11 @@ physicsWorld.addRigidBody( body, colGroupRedBall, colGroupPlane);
 						  </code>
 						</pre>
 					  </figure>
-					<p>
+					<p><strong>
 						Now in your init function you just need to call the two functions which
 						made the two balls for your world with the other important world defining
 						functions.
-					</p>
+					</strong></p>
 					<figure>
 						<pre>
 						  <code contenteditable spellcheck="false">  
@@ -954,20 +1025,21 @@ function Init()
 						  </code>
 						</pre>
 					  </figure>
-					<p>
+					<p><strong>
 						finally, now if you open your program you should now notice that there is 2
 						ball objects in the world and a static plane, both ball object will fall
 						but only the green ball will collide with the plane the red ball will fall
 						threw the plane because its collision group is the same value as the static
 						plane.
-					</p>
-					<p>
+					</strong></p>
+					<a href="#" class="image fit"><img src="images/collision group example image.png" alt="" /></a>
+					<p><strong>
 						These collision groups can be used for many purposes one example is for in
 						a shooter game when you don’t want your bullets to collide with your
 						teammates, therefore you can make the bullets of one team the same
 						collision group, so they don’t collide.
-					</p>
-					<p>
+					</strong></p>
+					<p><strong>
 						Thank you for reading my tutorial hopefully, this has given you the
 						information you need in order to get started with confidence using ammo.js,
 						I suggest you follow this link
@@ -977,7 +1049,7 @@ function Init()
 						to have a look at some of the more advanced projects you can make using the
 						information you have just learned it contains an example of soft bodies and
 						all the types of constraints discussed in this tutorial.
-					</p>
+					</strong></p>
 				</div>
 			</section>
 	</body>
