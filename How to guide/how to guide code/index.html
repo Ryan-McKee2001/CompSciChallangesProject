@@ -13,7 +13,7 @@
         //variable declaration
         let physicsWorld, controls, scene, camera, renderer, rigidBodies = []
         let softBodies = [];
-        let colGroupPlane = 1, colGroupPlankBlocks = 1;
+        let colGroupPlane = 1, colGroupRedBall = 1, colGroupGreenball = 2;
 
         window.addEventListener('resize', onWindowResize, false);
         //Ammojs Initialization
@@ -25,11 +25,53 @@
             tmpTrans = new Ammo.btTransform();
             setupPhysicsWorld();
             setupGraphics();
-            // createBlock();
+            createBlock();
             //createPlank();
             //createBall();
             //renderer.render(scene, camera);
+            //createGreenBall();
+            //createRedBall();
+           // createSoftBody();
+            //createSoftBody2();
+            createConstraint();
             renderFrame();
+        }
+
+        function createSoftBody2(){
+            // Create soft volumes
+            var volumeMass = 15;
+
+            var sphereGeometry = new THREE.SphereBufferGeometry( 1.5, 40, 25 );
+            sphereGeometry.translate( 5, 5, 0 );
+            createSoftVolume( sphereGeometry, volumeMass, 250 );
+
+            var boxGeometry = new THREE.BufferGeometry().fromGeometry( new THREE.BoxGeometry( 1, 1, 5, 4, 4, 20 ) );
+            boxGeometry.translate( -2, 5, 0 );
+            createSoftVolume( boxGeometry, volumeMass, 120 );
+        }
+
+        function createSoftVolume( bufferGeom, mass, pressure ) {
+
+            processGeometry( bufferGeom );
+
+            var volume = new THREE.Mesh( bufferGeom, new THREE.MeshPhongMaterial( { color: 0xFFFFFF } ) );
+            volume.castShadow = true;
+            volume.receiveShadow = true;
+            volume.frustumCulled = false;
+            scene.add( volume );
+
+            // Volume physic object
+
+            var volumeSoftBody = softBodyHelpers.CreateFromTriMesh(
+                physicsWorld.getWorldInfo(),
+                bufferGeom.ammoVertices,
+                bufferGeom.ammoIndices,
+                bufferGeom.ammoIndices.length / 3,
+                true );
+
+            var sbConfig = volumeSoftBody.get_m_cfg();
+            sbConfig.set_viterations( 40 );
+            sbConfig.set_piterations( 40 );
         }
     
         function setupPhysicsWorld()
@@ -153,12 +195,109 @@
             let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
             let body = new Ammo.btRigidBody( rbInfo );
 
-            physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );
+            physicsWorld.addRigidBody( body, colGroupPlane, colGroupGreenball );
             
         }
 
         // This method will create a sample soft body object
         function createSoftBody(){
+
+        }
+
+        function createConstraint(){
+            // These are the positions of the two objects that will be connected
+            let pos1 = {x: -1, y: 15, z: 0};
+            let pos2 = {x: -1, y: 10, z: 0};
+
+            // These are the properties for the two objects
+            let radius = 2; // radius creating the sphere
+            let scale = {x: 5, y: 2, z: 2};  // scale for creating the cube
+            let quat = {x: 0, y: 0, z: 0, w: 1};  // This is the rotation, both objects will share this
+            let mass1 = 0;  // this is the mass for the first object the ball. it is 0 therefore it is a static rigid body
+            let mass2 = 1;  // mass for the cube object making is dynamic
+
+            // world transform value.
+            let transform = new Ammo.btTransform();  
+
+            //Sphere Graphics
+            let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0xb846db}));
+
+            ball.position.set(pos1.x, pos1.y, pos1.z);
+
+            ball.castShadow = true;
+            ball.receiveShadow = true;
+
+            scene.add(ball);
+
+
+            //Sphere Physics
+            transform.setIdentity();
+            transform.setOrigin( new Ammo.btVector3( pos1.x, pos1.y, pos1.z ) );
+            transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+            let motionState = new Ammo.btDefaultMotionState( transform );
+
+            let sphereColShape = new Ammo.btSphereShape( radius );
+            sphereColShape.setMargin( 0.05 );
+
+            let localInertia = new Ammo.btVector3( 0, 0, 0 );
+            sphereColShape.calculateLocalInertia( mass1, localInertia );
+
+            let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass1, motionState, sphereColShape, localInertia );
+            let sphereBody = new Ammo.btRigidBody( rbInfo );
+
+            physicsWorld.addRigidBody( sphereBody);  // This will make the two object collide
+
+            ball.userData.physicsBody = sphereBody;  
+            rigidBodies.push(ball); 
+            
+
+            //Block Graphics
+            let block = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0xf78a1d}));
+
+            block.position.set(pos2.x, pos2.y, pos2.z);
+            block.scale.set(scale.x, scale.y, scale.z);
+
+            block.castShadow = true;
+            block.receiveShadow = true;
+
+            scene.add(block);
+
+
+            //Block Physics
+            transform.setIdentity();
+            transform.setOrigin( new Ammo.btVector3( pos2.x, pos2.y, pos2.z ) );
+            transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+            motionState = new Ammo.btDefaultMotionState( transform );
+
+            let blockColShape = new Ammo.btBoxShape( new Ammo.btVector3( scale.x * 0.5, scale.y * 0.5, scale.z * 0.5 ) );
+            blockColShape.setMargin( 0.05 );
+
+            localInertia = new Ammo.btVector3( 0, 0, 0 );
+            blockColShape.calculateLocalInertia( mass2, localInertia );
+
+            rbInfo = new Ammo.btRigidBodyConstructionInfo( mass2, motionState, blockColShape, localInertia );
+            let blockBody = new Ammo.btRigidBody( rbInfo );
+
+            physicsWorld.addRigidBody( blockBody );
+            
+            block.userData.physicsBody = blockBody;
+            rigidBodies.push(block);
+
+
+
+            //Create Joints
+            // the pivots of the two objects show where the two objects will connect
+            // we use vector 3 to represent it (0, 0, 0 ) vector represents the center of the 
+            // object, therefore when we want to get to the side of the object we need to use
+            // half that objects length. 
+            let spherePivot = new Ammo.btVector3( 0, - radius, 0 );  // since the sphere is the top object, it uses - radius as the sphere 
+            // pivot connects to the object below it on the y axis
+            let blockPivot = new Ammo.btVector3( - scale.x * 0.5, 1, 0 );  // its the same concept for the cube since the sphere is above it 
+            // we use half its height. 
+
+            let p2p = new Ammo.btConeTwistConstraint( sphereBody, blockBody, spherePivot, blockPivot);  // this defines the p2p object
+            // its takes 4 parameters the first body, second body, first bodies pivot, and second bodies pivot.
+            physicsWorld.addConstraint( p2p, false );  // this adds the p2p constraint defined above to the world.
 
         }
 
@@ -249,11 +388,51 @@
         }
 
 
-        function createBall(){  // This is just a example function for creating an object in ammo
+        function createGreenBall(){  // creating the green ball.
     
-            let pos = {x: 0, y: 20, z: 0};
+            let pos = {x: 3, y: 20, z: 0};
             let radius = 2;
             let quat = {x: 0, y: 0, z: 0, w: 1};
+            let mass = 1;
+
+            //threeJS Section
+            let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0x00FF00}));
+
+            ball.position.set(pos.x, pos.y, pos.z);
+            
+            ball.castShadow = true;
+            ball.receiveShadow = true;
+
+            scene.add(ball);
+
+
+            //Ammojs Section
+            let transform = new Ammo.btTransform();
+            transform.setIdentity();
+            transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+            transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+            let motionState = new Ammo.btDefaultMotionState( transform );
+
+            let colShape = new Ammo.btSphereShape( radius );
+            colShape.setMargin( 0.05 );
+
+            let localInertia = new Ammo.btVector3( 0, 0, 0 );
+            colShape.calculateLocalInertia( mass, localInertia );
+
+            let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+            let body = new Ammo.btRigidBody( rbInfo );
+
+
+            physicsWorld.addRigidBody( body, colGroupGreenball, colGroupPlane );
+            
+            ball.userData.physicsBody = body;
+            rigidBodies.push(ball);
+        }
+
+        function createRedBall(){  // creating the red ball
+            let pos = {x: -3, y: 20, z: 0};  
+            let radius = 2;  
+            let quat = {x: 0, y: 0, z: 0, w: 1};  
             let mass = 1;
 
             //threeJS Section
@@ -284,7 +463,7 @@
             let body = new Ammo.btRigidBody( rbInfo );
 
 
-            physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane );
+            physicsWorld.addRigidBody( body, colGroupRedBall, colGroupPlane);
             
             ball.userData.physicsBody = body;
             rigidBodies.push(ball);
