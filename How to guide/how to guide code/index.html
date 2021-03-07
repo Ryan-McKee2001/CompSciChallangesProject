@@ -12,6 +12,7 @@
         
         //variable declaration
         let physicsWorld, controls, scene, camera, renderer, rigidBodies = []
+        let softBodies = [];
         let colGroupPlane = 1, colGroupPlankBlocks = 1;
 
         window.addEventListener('resize', onWindowResize, false);
@@ -24,7 +25,7 @@
             tmpTrans = new Ammo.btTransform();
             setupPhysicsWorld();
             setupGraphics();
-           // createBlock();
+            // createBlock();
             //createPlank();
             //createBall();
             //renderer.render(scene, camera);
@@ -154,6 +155,11 @@
 
             physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );
             
+        }
+
+        // This method will create a sample soft body object
+        function createSoftBody(){
+
         }
 
         function createPlank(){
