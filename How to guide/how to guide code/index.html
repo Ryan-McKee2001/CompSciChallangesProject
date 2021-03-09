@@ -290,14 +290,38 @@
             // we use vector 3 to represent it (0, 0, 0 ) vector represents the center of the 
             // object, therefore when we want to get to the side of the object we need to use
             // half that objects length. 
+
             let spherePivot = new Ammo.btVector3( 0, - radius, 0 );  // since the sphere is the top object, it uses - radius as the sphere 
             // pivot connects to the object below it on the y axis
             let blockPivot = new Ammo.btVector3( - scale.x * 0.5, 1, 0 );  // its the same concept for the cube since the sphere is above it 
             // we use half its height. 
 
+            /*
             let p2p = new Ammo.btConeTwistConstraint( sphereBody, blockBody, spherePivot, blockPivot);  // this defines the p2p object
             // its takes 4 parameters the first body, second body, first bodies pivot, and second bodies pivot.
             physicsWorld.addConstraint( p2p, false );  // this adds the p2p constraint defined above to the world.
+            */
+            let spring = new Ammo.btPoint2PointConstraint( sphereBody, blockBody, spherePivot, blockPivot ); // true mains frame a is the cooridnate reference
+                //Configuring spring
+            
+            //spring.setEquilibriumPoint(1,-this.length);
+            
+
+            spring.setLinearLowerLimit(new Ammo.btVector3(-100,-100,-100)); //So here the both pivot can have a distance of 20 where they can move freely
+            spring.setLinearUpperLimit(new Ammo.btVector3(100,100,100));
+
+            spring.enableSpring(1,true); 
+            spring.setStiffness(1,this.stiffness); 
+            spring.setDamping(1,this.damping); 
+            spring.enableSpring(0,true); 
+            spring.setStiffness(0,this.stiffness); 
+            spring.setDamping(0,this.damping); 
+            spring.enableSpring(2,true); 
+            spring.setStiffness(2,this.stiffness); 
+            spring.setDamping(2,this.damping);
+            
+
+            physicsWorld.addConstraint(spring);
 
         }
 
