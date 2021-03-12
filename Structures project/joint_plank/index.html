@@ -264,7 +264,7 @@
                     for ( let wid = 0; wid < width; wid++){
                         for ( let len = 0; len < length - 1; len ++){
                             let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
-                            let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);
+                            let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);  // need to swap around parametors, vector is incorrect.
 
                             let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[len][wid], blockArray[len+1][wid], blockPivot1, blockPivot2, true );
                             physicsWorld.addConstraint(spring);
@@ -285,7 +285,24 @@
                     /*
                     let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
                     let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);
-                    let p2p = new Ammo.btPoint2PointConstraint( blockArray[z][x], blockArray[z][x+1], blockPivot1, blockPivot2 );
+                    let p2p = new Ammo.btGeneric6DofSpringConstraint( blockArray[z][x], blockArray[z][x+1], blockPivot1, blockPivot2, false );
+                    
+                    p2p.setEquilibriumPoint(1,-this.length);
+                    
+
+                    p2p.setLinearLowerLimit(new Ammo.btVector3(-100,-100,-100)); //So here the both pivot can have a distance of 20 where they can move freely
+                    p2p.setLinearUpperLimit(new Ammo.btVector3(100,100,100));
+
+                    p2p.enableSpring(1,true); 
+                    p2p.setStiffness(1,this.stiffness); 
+                    p2p.setDamping(1,this.damping); 
+                    p2p.enableSpring(0,true); 
+                    p2p.setStiffness(0,this.stiffness); 
+                    p2p.setDamping(0,this.damping); 
+                    p2p.enableSpring(2,true); 
+                    p2p.setStiffness(2,this.stiffness); 
+                    p2p.setDamping(2,this.damping);
+
                     physicsWorld.addConstraint( p2p, false );
                     */
                     //let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1,  );
