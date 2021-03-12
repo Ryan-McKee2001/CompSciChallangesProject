@@ -184,7 +184,7 @@
             // the nested for loop creates a block for every element in each of the 
             // arrays within block array.
             for( let z = 0; z < length; z++ ){  // loops up will it is equal to length
-                for( let x = 0; x <= width; x++ ){  // loops till it is equal to width
+                for( let x = 0; x < width; x++ ){  // loops till it is equal to width
                     console.log('x: '+x);  
                     // three.js section
                     let block = new THREE.Mesh( new THREE.BoxBufferGeometry(1,1,1), new THREE.MeshPhongMaterial({color: 0x964B00}) );
@@ -229,12 +229,29 @@
             // adds point to point constraints between them
             for( let z = 0; z < blockArray.length -1; z++ ){
                 for ( let x = 0; x < blockArray[z].length - 1; x++){
-                    /*
+                    
                     let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
                     let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);
-                    let p2p = new Ammo.btPoint2PointConstraint( blockArray[z][x], blockArray[z][x+1], blockPivot1, blockPivot2 );
+                    let p2p = new Ammo.btGeneric6DofSpringConstraint( blockArray[z][x], blockArray[z][x+1], blockPivot1, blockPivot2, false );
+                    
+                    p2p.setEquilibriumPoint(1,-this.length);
+                    
+
+                    p2p.setLinearLowerLimit(new Ammo.btVector3(-100,-100,-100)); //So here the both pivot can have a distance of 20 where they can move freely
+                    p2p.setLinearUpperLimit(new Ammo.btVector3(100,100,100));
+
+                    p2p.enableSpring(1,true); 
+                    p2p.setStiffness(1,this.stiffness); 
+                    p2p.setDamping(1,this.damping); 
+                    p2p.enableSpring(0,true); 
+                    p2p.setStiffness(0,this.stiffness); 
+                    p2p.setDamping(0,this.damping); 
+                    p2p.enableSpring(2,true); 
+                    p2p.setStiffness(2,this.stiffness); 
+                    p2p.setDamping(2,this.damping);
+
                     physicsWorld.addConstraint( p2p, false );
-                    */
+                    /*
                     let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1,  );
                     let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5,1, 1 );
                     let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[z][x], blockArray[z][x+1], blockPivot1, blockPivot2, true ); // true mains frame a is the cooridnate reference
@@ -256,6 +273,7 @@
                     spring.setDamping(2,this.damping);
 
                     physicsWorld.addConstraint(spring,false);
+                    */
                     
                 }
             }
@@ -267,12 +285,13 @@
             // add constraint for first item connected in column connected with the next row.
             for( let z = 0; z < blockArray.length - 1; z ++){  // need to check if this works.
                 for ( let x = 0; x < blockArray[z] - 1; x++ ){
-                    /*
+                    
                     let blockPivot1 = new Ammo.btVector3( 1, 1, scale.x * 0.5 );
                     let blockPivot2 = new Ammo.btVector3( 1, 1, - scale.x * 0.5);
                     let p2p = new Ammo.btPoint2PointConstraint( blockArray[z][x], blockArray[z+1][x], blockPivot1, blockPivot2 );
                     physicsWorld.addConstraint( p2p, false );
-                    */
+                    
+                    /*
                     let blockPivot1 = new Ammo.btVector3( 1, 1, scale.x * 0.5 );
                     let blockPivot2 = new Ammo.btVector3( 1, 1, - scale.x * 0.5);
                     let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[z][x], blockArray[z+1][x], blockPivot1, blockPivot2, true ); // true mains frame a is the cooridnate reference
@@ -294,8 +313,11 @@
                     spring.setDamping(2,this.damping);
 
                     physicsWorld.addConstraint(spring,false);
+                    */
                 }
             }
+
+            console.log(blockArray);
 
             
         }
