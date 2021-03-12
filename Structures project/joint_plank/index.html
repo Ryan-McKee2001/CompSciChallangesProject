@@ -278,17 +278,17 @@
                             frameInA,
                             true // => FrameA is the coord referential // false = FrameB
 
-            );
-        this.springB = 
-            new Ammo.btGeneric6DofSpringConstraint(
-                this.junction_object.physicsImpostor.physicsBody,
-                this.objectB.physicsImpostor.physicsBody,
-                jointTransform,
-                frameInB,
-                
-                true // => FrameA is the coord referential // false = FrameB
+                            );
+                        this.springB = 
+                            new Ammo.btGeneric6DofSpringConstraint(
+                                this.junction_object.physicsImpostor.physicsBody,
+                                this.objectB.physicsImpostor.physicsBody,
+                                jointTransform,
+                                frameInB,
+                                
+                                true // => FrameA is the coord referential // false = FrameB
 
-            );
+                            );
 
                         }
                     }
