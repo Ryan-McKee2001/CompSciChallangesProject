@@ -260,14 +260,36 @@
                 else
                     console.log('block length is not greater than 1');
 
+                let jointTransform = new Ammo.btTransform();
                 if(width > 1){
                     for ( let wid = 0; wid < width; wid++){
                         for ( let len = 0; len < length - 1; len ++){
                             let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
                             let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);  // need to swap around parametors, vector is incorrect.
-
+                            /*
                             let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[len][wid], blockArray[len+1][wid], blockPivot1, blockPivot2, true );
                             physicsWorld.addConstraint(spring);
+                            */
+                            this.springA = 
+                            new Ammo.btGeneric6DofSpringConstraint(
+                            this.junction_object.physicsImpostor.physicsBody,
+                            this.objectA.physicsImpostor.physicsBody,
+                            jointTransform,
+                            frameInA,
+                            true // => FrameA is the coord referential // false = FrameB
+
+            );
+        this.springB = 
+            new Ammo.btGeneric6DofSpringConstraint(
+                this.junction_object.physicsImpostor.physicsBody,
+                this.objectB.physicsImpostor.physicsBody,
+                jointTransform,
+                frameInB,
+                
+                true // => FrameA is the coord referential // false = FrameB
+
+            );
+
                         }
                     }
                 }
