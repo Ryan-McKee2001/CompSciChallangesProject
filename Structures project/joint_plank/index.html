@@ -232,8 +232,19 @@
                             let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
                             let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);
 
-                            let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[len][wid], blockArray[len][wid+1], blockPivot1, blockPivot2, true );
-                           
+                            let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[len][wid], blockArray[len][wid+1], blockPivot1, blockPivot2, true );  // coordinate referential last parameter, one is the
+                            // there are rotation and translation constraints. The frames are the relative point on the object.  In the middle of the object is the object
+                            // the frame is the position and orientation of the lower part. if you allow a translational change to occur 
+                            // there are 2 z axis for both objects. 
+
+                           // need to add limits to the 6dof constraint or else they well seperate from each other.
+                           // need to try debug render where stuff world. 
+                           // should discuss different ways the plank could be simulated soft bidies 6dof constraint to add stretchiness and type of actions that could be applied
+                           // like bending stretching. should embed the demo in the blog.
+                           // should demostrate testing eventually.
+                           // should also say the next thing to make in the blog post even if you have not done that.
+
+
                             //Configuring spring
                             /*
                             spring.setEquilibriumPoint(1,-this.length);
@@ -414,6 +425,9 @@
                     objThree.quaternion.set( q.x(), q.y(), q.z(), q.w() );
                 }
             }
+        }
+
+        function debugVisulisation(){  // This method visualises the effects of all the physics in the world.
         }
     </script>
 </body>
