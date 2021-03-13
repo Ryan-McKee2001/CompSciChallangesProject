@@ -246,23 +246,21 @@
 
 
                             //Configuring spring
-                            /*
                             spring.setEquilibriumPoint(1,-this.length);
                             
 
-                            spring.setLinearLowerLimit(new Ammo.btVector3(-100,-100,-100)); //So here the both pivot can have a distance of 20 where they can move freely
-                            spring.setLinearUpperLimit(new Ammo.btVector3(100,100,100));
+                            spring.setLinearLowerLimit(new Ammo.btVector3(0,0,0)); //So here the both pivot can have a distance of 20 where they can move freely
+                            spring.setLinearUpperLimit(new Ammo.btVector3(1,1,1));
 
                             spring.enableSpring(1,true); 
-                            spring.setStiffness(1,this.stiffness); 
-                            spring.setDamping(1,this.damping); 
-                            spring.enableSpring(0,true); 
-                            spring.setStiffness(0,this.stiffness); 
-                            spring.setDamping(0,this.damping); 
-                            spring.enableSpring(2,true); 
-                            spring.setStiffness(2,this.stiffness); 
-                            spring.setDamping(2,this.damping);
-                            */
+                            spring.setStiffness(1,/*this.stiffness*/); 
+                            spring.setDamping(1,/*this.damping*/); 
+                            spring.enableSpring(0/*,true*/); 
+                            spring.setStiffness(0/*,this.stiffness*/); 
+                            spring.setDamping(0/*,this.damping*/); 
+                            spring.enableSpring(2/*,true*/); 
+                            spring.setStiffness(2/*,this.stiffness*/); 
+                            spring.setDamping(2/*,this.damping*/);
 
                             physicsWorld.addConstraint(spring);
                         }
@@ -273,32 +271,21 @@
 
                 let jointTransform = new Ammo.btTransform();
                 if(width > 1){
-                    for ( let wid = 0; wid < width; wid++){
-                        for ( let len = 0; len < length - 1; len ++){
+                    for ( let wid = 0; wid < width-1; wid++){
+                        for ( let len = 0; len < length; len ++){
                             let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
                             let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);  // need to swap around parametors, vector is incorrect.
                             /*
                             let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[len][wid], blockArray[len+1][wid], blockPivot1, blockPivot2, true );
                             physicsWorld.addConstraint(spring);
                             */
-                            this.springA = 
+                            let spring = 
                             new Ammo.btGeneric6DofSpringConstraint(
-                            this.junction_object.physicsImpostor.physicsBody,
-                            this.objectA.physicsImpostor.physicsBody,
-                            jointTransform,
-                            frameInA,
+                            blockArray[wid][len],
+                            blockArray[wid+1][len],
+                            blockPivot1,
+                            blockPivot2,
                             true // => FrameA is the coord referential // false = FrameB
-
-                            );
-                        this.springB = 
-                            new Ammo.btGeneric6DofSpringConstraint(
-                                this.junction_object.physicsImpostor.physicsBody,
-                                this.objectB.physicsImpostor.physicsBody,
-                                jointTransform,
-                                frameInB,
-                                
-                                true // => FrameA is the coord referential // false = FrameB
-
                             );
 
                         }

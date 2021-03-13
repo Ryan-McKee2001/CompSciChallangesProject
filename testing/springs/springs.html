@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>spring testing using 6 dof</title>
+</head>
+<body>
+    <script src="js/three.js"></script>
+    <script src="js/ammo.js"></script>
+   
+    <script>
+
+        //variable declaration
+        let physicsWorld, controls, scene, camera, renderer;  // Three.js variables
+        let rigidBodies = [];  // Ammo.js variables 
+        let colGroupPlane = 1, colGroupPlankBlocks = 1;  // Ammo.js collision groups declaration
+
+        window.addEventListener('resize', onWindowResize, false); // Calls a function
+        // which resizes the renderer size when the webpage size is changed.
+
+        //Ammojs Initialisation
+        Ammo().then( Init )  // calls the Init function on start up
+        
+        function Init()  // This function is called on start up and calls all the main program functions
+        {
+            tmpTrans = new Ammo.btTransform();
+            setupPhysicsWorld();
+            setupGraphics();
+            //createBlock();
+            createJointObjects();
+            renderFrame();
+        }
+    
+        function customGeometry(){
+            
+        }
+
+        function setupPhysicsWorld()  // This function creates the ammo.js physics world
+        {
+            let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),  // this attribute sets the collision configuration which allows you to tune
+                // the algorithms used for the full collision detection
+                dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),   // The collision dispatcher filters overlapping broadphase proxies so that the collisions 
+                //are not processed by the rest of the system.
+                overlappingPairCache = new Ammo.btDbvtBroadphase(),   // Broadphase compiles a list of pairs of colliding objects.
+                solver = new Ammo.btSequentialImpulseConstraintSolver();
+                 // solver is what causes the objects to interact properely it takes into account gravity,
+                //  game logic supplied forces, collisions, and hinge constraints.
+
+            physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+            physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
+             // Finally btDiscreteDynamicsWorld takes all the parameters defined above to create a physics world. 
+                // and set gravity takes 3 parameters, the first and third can be thought of as wind and the second parameters can be thought
+                // of as the gravitational force, that is why in this example the second parameter is equal to -10 as this is the same as earths
+               // gravitational force.
+        }
+        
+        function setupGraphics()  // This function creates the three.js graphics world
+        {
+            //create clock for timing
+            clock = new THREE.Clock();
+
+            //create the scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color( 0xbfd1e5 );
+
+            //create camera
+            camera = new THREE.PerspectiveCamera( 10, window.innerWidth / window.innerHeight, 0.2, 5000 );
+            camera.position.set( 50, 180, -170 );
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+            //Add hemisphere light
+            let hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.1 );
+            hemiLight.color.setHSL( 0.6, 0.6, 0.6 );
+            hemiLight.groundColor.setHSL( 0.1, 1, 0.4 );
+            hemiLight.position.set( 0, 50, 0 );
+            scene.add( hemiLight );
+
+            //Add directional light
+            let dirLight = new THREE.DirectionalLight( 0xffffff , 1);
+            dirLight.color.setHSL( 0.1, 1, 0.95 );
+            dirLight.position.set( -1, 1.75, 1 );
+            dirLight.position.multiplyScalar( 100 );
+            scene.add( dirLight );
+
+            dirLight.castShadow = true;
+
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+
+            let d = 50;
+
+            dirLight.shadow.camera.left = -d;
+            dirLight.shadow.camera.right = d;
+            dirLight.shadow.camera.top = d;
+            dirLight.shadow.camera.bottom = -d;
+            dirLight.shadow.camera.far = 13500;
+
+            //Setup the renderer
+            renderer = new THREE.WebGLRenderer( { antialias: true } );
+            renderer.setClearColor( 0xbfd1e5 );
+            renderer.setPixelRatio( window.devicePixelRatio );
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
+                                                 
+            renderer.shadowMap.enabled = true;
+        }
+         
+        //This is a function which will be called a an event listener to resize the tab.
+        function onWindowResize(){
+            camera.aspect = window.innerWidth/window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth,window.innerHeight);
+        }
+
+        // This is a recursive function that updates the graphics for every browser frame.
+        function renderFrame() 
+        {
+            let deltaTime = clock.getDelta();
+            updatePhysics(deltaTime);
+            renderer.render( scene, camera );
+            requestAnimationFrame( renderFrame );
+        }
+        
+        // This function creates the static rigid body which will be the plane the world is based on.
+        function createBlock()
+        {
+            let pos = {x: 22, y: 0, z: 16};  // position
+            let scale = {x: 50, y: 2, z: 50};  // scale
+            let quat = {x: 0, y: 0, z: 0, w: 1};  // rotation
+            let mass = 0;  // static mass
+
+            //threeJS Section
+            let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0x3c4145}));
+
+            blockPlane.position.set(pos.x, pos.y, pos.z);
+            blockPlane.scale.set(scale.x, scale.y, scale.z);
+
+            blockPlane.castShadow = true;
+            blockPlane.receiveShadow = true;
+
+            scene.add(blockPlane);
+
+
+            //Ammojs Section
+            let transform = new Ammo.btTransform();
+            transform.setIdentity();
+            transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+            transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+            let motionState = new Ammo.btDefaultMotionState( transform );
+
+            let colShape = new Ammo.btBoxShape( new Ammo.btVector3( scale.x * 0.5, scale.y * 0.5, scale.z * 0.5 ) );
+            colShape.setMargin( 0.05 );
+
+            let localInertia = new Ammo.btVector3( 0, 0, 0 );
+            colShape.calculateLocalInertia( mass, localInertia );
+
+            let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+            let body = new Ammo.btRigidBody( rbInfo );
+
+            physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );  // adds the block plane to the colGroupPlane
+            // collision group and sets it to collide with col, colGroupPlankBlocks
+            
+        }
+
+        
+        function createJointObjects(){
+            let restLength = 2;
+
+
+            let pos1 = {x: -1, y: 15, z: 0};
+            let pos2 = {x: -1, y: 10, z: 0};
+
+            let radius = 2;
+            let scale = {x: 5, y: 2, z: 2};
+            let quat = {x: 0, y: 0, z: 0, w: 1};
+            let mass1 = 0;
+            let mass2 = 1;
+
+            let transform = new Ammo.btTransform();
+
+            //Sphere Graphics
+            let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0xb846db}));
+
+            ball.position.set(pos1.x, pos1.y, pos1.z);
+
+            ball.castShadow = true;
+            ball.receiveShadow = true;
+
+            scene.add(ball);
+
+
+            //Sphere Physics
+            transform.setIdentity();
+            transform.setOrigin( new Ammo.btVector3( pos1.x, pos1.y, pos1.z ) );
+            transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+            let motionState = new Ammo.btDefaultMotionState( transform );
+
+            let sphereColShape = new Ammo.btSphereShape( radius );
+            sphereColShape.setMargin( 0.05 );
+
+            let localInertia = new Ammo.btVector3( 0, 0, 0 );
+            sphereColShape.calculateLocalInertia( mass1, localInertia );
+
+            let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass1, motionState, sphereColShape, localInertia );
+            let sphereBody = new Ammo.btRigidBody( rbInfo );
+
+            physicsWorld.addRigidBody( sphereBody );
+
+            ball.userData.physicsBody = sphereBody;
+            rigidBodies.push(ball);
+            
+
+            //Block Graphics
+            let block = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0xf78a1d}));
+
+            block.position.set(pos2.x, pos2.y, pos2.z);
+            block.scale.set(scale.x, scale.y, scale.z);
+
+            block.castShadow = true;
+            block.receiveShadow = true;
+
+            scene.add(block);
+
+
+            //Block Physics
+            transform.setIdentity();
+            transform.setOrigin( new Ammo.btVector3( pos2.x, pos2.y, pos2.z ) );
+            transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+            motionState = new Ammo.btDefaultMotionState( transform );
+
+            let blockColShape = new Ammo.btBoxShape( new Ammo.btVector3( scale.x * 0.5, scale.y * 0.5, scale.z * 0.5 ) );
+            blockColShape.setMargin( 0.05 );
+
+            localInertia = new Ammo.btVector3( 0, 0, 0 );
+            blockColShape.calculateLocalInertia( mass2, localInertia );
+
+            rbInfo = new Ammo.btRigidBodyConstructionInfo( mass2, motionState, blockColShape, localInertia );
+            let blockBody = new Ammo.btRigidBody( rbInfo );
+
+            physicsWorld.addRigidBody( blockBody );
+            
+            block.userData.physicsBody = blockBody;
+            rigidBodies.push(block);
+
+
+            //Create Joints
+            let spherePivot = new Ammo.btVector3( 0, - radius, 0 );
+            let blockPivot = new Ammo.btVector3( - scale.x * 0.5, 1, 1 );
+
+            let spring = new Ammo.btGeneric6DofSpringConstraint(sphereBody, blockBody, spherePivot, blockPivot, true );  // coordinate referential last parameter, one is the
+
+            spring.setEquilibriumPoint(1,-this.length);
+
+            spring.setLinearLowerLimit(new Ammo.btVector3(0,-100,0)); //So here the both pivot can have a distance of 20 where they can move freely
+            spring.setLinearUpperLimit(new Ammo.btVector3(0,-100,0));
+
+            spring.enableSpring(1, true)
+            spring.setStiffness(1, 25.0)
+            spring.setDamping(1, 0.02)
+            const upper = new Ammo.btVector3(0.0, 1000.0, 0.0);
+            const lower = new Ammo.btVector3(0.0, -1000.0, 0.0);
+            //spring.setLinearUpperLimit(upper);
+            //spring.setLinearLowerLimit(lower)
+            //Ammo.destroy(upper);
+            //Ammo.destroy(lower);
+            physicsWorld.addConstraint( spring, false );
+            
+
+        }
+        
+        // This function steps through every rigid body and updates the correlating three.js
+        // object position. 
+        function updatePhysics( deltaTime )  
+        {
+            // Step world
+            physicsWorld.stepSimulation( deltaTime, 10 );
+    
+            // Update rigid bodies
+            for ( let i = 0; i < rigidBodies.length; i++ )
+            {
+                let objThree = rigidBodies[ i ];
+                let objAmmo = objThree.userData.physicsBody;
+                let ms = objAmmo.getMotionState();
+                if ( ms )
+                {
+                    ms.getWorldTransform( tmpTrans );
+                    let p = tmpTrans.getOrigin();
+                    let q = tmpTrans.getRotation();
+                    objThree.position.set( p.x(), p.y(), p.z() );
+                    objThree.quaternion.set( q.x(), q.y(), q.z(), q.w() );
+                }
+            }
+        }
+
+        function debugVisulisation(){  // This method visualises the effects of all the physics in the world.
+        }
+    </script>
+</body>
+</html>
