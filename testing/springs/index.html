@@ -22,6 +22,7 @@
         function setUpGrahpics(){
             scene = new THREE.Scene();
             camera = new THREE.Perspectivecamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            renderer = new WebGLRenderer(scene, camera);
         }
         function setUpPhysics(){
 
