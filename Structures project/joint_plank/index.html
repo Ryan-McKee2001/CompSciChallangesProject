@@ -8,6 +8,7 @@
 <body>
     <script src="js/three.js"></script>
     <script src="js/ammo.js"></script>
+    <script src="js/OrbitControls.js"></script>
    
     <script>
 
@@ -59,6 +60,11 @@
             //create the scene
             scene = new THREE.Scene();
             scene.background = new THREE.Color( 0xbfd1e5 );
+
+            // Create controls
+            //controls = new THREE.OrbitControls(camera, renderer.domElement);
+            //controls.target.set(0,2,0);
+            //camera.lookAt(0,2,0);
 
             //create camera
             camera = new THREE.PerspectiveCamera( 10, window.innerWidth / window.innerHeight, 0.2, 5000 );
@@ -113,6 +119,7 @@
         function renderFrame() 
         {
             let deltaTime = clock.getDelta();
+           // controls.update();
             updatePhysics(deltaTime);
             renderer.render( scene, camera );
             requestAnimationFrame( renderFrame );
