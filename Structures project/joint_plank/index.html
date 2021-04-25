@@ -232,69 +232,38 @@
                 }
             }
 
+            // Checks if width and length is greater than 1 so no errors occur
             if( length > 1 && width > 1){
-                if(length > 1){
+                if(length > 1){  // loops through each column and connects rows
                     for ( let len = 0; len < length; len++){
                         for ( let wid = 0; wid < width - 1; wid ++){
+                            // pivot declaration
                             let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
                             let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);
-
-                            let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[len][wid], blockArray[len][wid+1], blockPivot1, blockPivot2, true );  // coordinate referential last parameter, one is the
-                            // there are rotation and translation constraints. The frames are the relative point on the object.  In the middle of the object is the object
-                            // the frame is the position and orientation of the lower part. if you allow a translational change to occur 
-                            // there are 2 z axis for both objects. 
-
-                           // need to add limits to the 6dof constraint or else they well seperate from each other.
-                           // need to try debug render where stuff world. 
-                           // should discuss different ways the plank could be simulated soft bidies 6dof constraint to add stretchiness and type of actions that could be applied
-                           // like bending stretching. should embed the demo in the blog.
-                           // should demostrate testing eventually.
-                           // should also say the next thing to make in the blog post even if you have not done that.
-
-
-                            //Configuring spring
-                            spring.setEquilibriumPoint(1,-this.length);
-                            
-
-                            spring.setLinearLowerLimit(new Ammo.btVector3(0,0,0)); //So here the both pivot can have a distance of 20 where they can move freely
-                            spring.setLinearUpperLimit(new Ammo.btVector3(1,1,1));
-
-                            spring.enableSpring(1,true); 
-                            spring.setStiffness(1,/*this.stiffness*/); 
-                            spring.setDamping(1,/*this.damping*/); 
-                            spring.enableSpring(0/*,true*/); 
-                            spring.setStiffness(0/*,this.stiffness*/); 
-                            spring.setDamping(0/*,this.damping*/); 
-                            spring.enableSpring(2/*,true*/); 
-                            spring.setStiffness(2/*,this.stiffness*/); 
-                            spring.setDamping(2/*,this.damping*/);
-
-                            physicsWorld.addConstraint(spring);
+                            // Creates a p2p constraint connecting both bodys
+                            let p2p = new Ammo.btPointToPointConstraint( blockArray[len][wid], blockArray[len][wid+1], blockPivot1, blockPivot2 );  // coordinate referential last parameter, one is the
+                            // Adds the constraint to the physics world
+                            physicsWorld.addConstraint(p2p);
                         }
                     }
                 }
                 else
-                    console.log('block length is not greater than 1');
+                    console.log('block length is not greater than 1');  
 
                 let jointTransform = new Ammo.btTransform();
-                if(width > 1){
-                    for ( let wid = 0; wid < width-1; wid++){
-                        for ( let len = 0; len < length; len ++){
-                            let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
-                            let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);  // need to swap around parametors, vector is incorrect.
-                            /*
-                            let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[len][wid], blockArray[len+1][wid], blockPivot1, blockPivot2, true );
-                            physicsWorld.addConstraint(spring);
-                            */
-                            let spring = 
-                            new Ammo.btGeneric6DofSpringConstraint(
-                            blockArray[wid][len],
-                            blockArray[wid+1][len],
-                            blockPivot1,
-                            blockPivot2,
-                            true // => FrameA is the coord referential // false = FrameB
-                            );
 
+                // checks if width is greater than 1 so no error occurs
+                if(width > 1){
+                    for ( let wid = 0; wid < width-1; wid++){  // loops through each row and connects columns
+                        for ( let len = 0; len < length; len ++){
+                            // declaring pivots
+                            let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
+                            let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);  
+
+                            // creating the p2p object
+                            let p2p = new Ammo.btPointToPointConstraint( blockArray[len][wid], blockArray[len][wid+1], blockPivot1, blockPivot2 );  
+                            // Adds the constraint to the physics world
+                            physicsWorld.addConstraint(p2p);
                         }
                     }
                 }
@@ -303,98 +272,6 @@
             }
             else
                 console.log('invalid plank length or width, neither of these values can be less than 1');
-            
-
-            // This is a nested for loop that iterates through each block in each row and 
-            // adds point to point constraints between them
-            //for( let z = 0; z < blockArray.length -1; z++ ){
-               // for ( let x = 0; x < blockArray[z].length - 1; x++){
-                    /*
-                    let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
-                    let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);
-                    let p2p = new Ammo.btGeneric6DofSpringConstraint( blockArray[z][x], blockArray[z][x+1], blockPivot1, blockPivot2, false );
-                    
-                    p2p.setEquilibriumPoint(1,-this.length);
-                    
-
-                    p2p.setLinearLowerLimit(new Ammo.btVector3(-100,-100,-100)); //So here the both pivot can have a distance of 20 where they can move freely
-                    p2p.setLinearUpperLimit(new Ammo.btVector3(100,100,100));
-
-                    p2p.enableSpring(1,true); 
-                    p2p.setStiffness(1,this.stiffness); 
-                    p2p.setDamping(1,this.damping); 
-                    p2p.enableSpring(0,true); 
-                    p2p.setStiffness(0,this.stiffness); 
-                    p2p.setDamping(0,this.damping); 
-                    p2p.enableSpring(2,true); 
-                    p2p.setStiffness(2,this.stiffness); 
-                    p2p.setDamping(2,this.damping);
-
-                    physicsWorld.addConstraint( p2p, false );
-                    */
-                    //let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1,  );
-                    //let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5,1, 1 );
-                    //let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[z][x], blockArray[z][x+1], blockPivot1, blockPivot2, true ); // true mains frame a is the cooridnate reference
-                     //Configuring spring
-                    //spring.setEquilibriumPoint(1,-this.length);
-                    
-
-                   // spring.setLinearLowerLimit(new Ammo.btVector3(-100,-100,-100)); //So here the both pivot can have a distance of 20 where they can move freely
-                   // spring.setLinearUpperLimit(new Ammo.btVector3(100,100,100));
-
-                   // spring.enableSpring(1,true); 
-                    //spring.setStiffness(1,this.stiffness); 
-                   // spring.setDamping(1,this.damping); 
-                   // spring.enableSpring(0,true); 
-                  //  spring.setStiffness(0,this.stiffness); 
-                   // spring.setDamping(0,this.damping); 
-                   // spring.enableSpring(2,true); 
-                   // spring.setStiffness(2,this.stiffness); 
-                   // spring.setDamping(2,this.damping);
-
-                   // physicsWorld.addConstraint(spring,false);
-                    
-                //}
-           // }
-
-            // This is a nested for loop that iterates through each block in each column 
-            // and connects them with p2p constraints.
-            // for loop through each width
-            // for loop for every item in height -1
-            // add constraint for first item connected in column connected with the next row.
-           // for( let z = 0; z < blockArray.length - 1; z ++){  // need to check if this works.
-               // for ( let x = 0; x < blockArray[z] - 1; x++ ){
-                    /*
-                    let blockPivot1 = new Ammo.btVector3( 1, 1, scale.x * 0.5 );
-                    let blockPivot2 = new Ammo.btVector3( 1, 1, - scale.x * 0.5);
-                    let p2p = new Ammo.btPoint2PointConstraint( blockArray[z][x], blockArray[z+1][x], blockPivot1, blockPivot2 );
-                    physicsWorld.addConstraint( p2p, false );
-                    */
-                   /*
-                    let blockPivot1 = new Ammo.btVector3( 1, 1, scale.x * 0.5 );
-                    let blockPivot2 = new Ammo.btVector3( 1, 1, - scale.x * 0.5);
-                    let spring = new Ammo.btGeneric6DofSpringConstraint( blockArray[z][x], blockArray[z+1][x], blockPivot1, blockPivot2, true ); // true mains frame a is the cooridnate reference
-                     //Configuring spring
-                    spring.setEquilibriumPoint(1,-this.length);
-                    
-
-                    spring.setLinearLowerLimit(new Ammo.btVector3(-100,-100,-100)); //So here the both pivot can have a distance of 20 where they can move freely
-                    spring.setLinearUpperLimit(new Ammo.btVector3(100,100,100));
-
-                    spring.enableSpring(1,true); 
-                    spring.setStiffness(1,this.stiffness); 
-                    spring.setDamping(1,this.damping); 
-                    spring.enableSpring(0,true); 
-                    spring.setStiffness(0,this.stiffness); 
-                    spring.setDamping(0,this.damping); 
-                    spring.enableSpring(2,true); 
-                    spring.setStiffness(2,this.stiffness); 
-                    spring.setDamping(2,this.damping);
-
-                    physicsWorld.addConstraint(spring,false);
-                    */
-                //}
-           // } 
         }
         
         // This function steps through every rigid body and updates the correlating three.js
@@ -423,9 +300,6 @@
                     // to be equal to the ammo.js object rotation.
                 }
             }
-        }
-
-        function debugVisulisation(){  // This method visualises the effects of all the physics in the world.
         }
     </script>
 </body>
