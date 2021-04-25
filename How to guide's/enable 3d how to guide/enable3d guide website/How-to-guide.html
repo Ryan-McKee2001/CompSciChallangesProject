@@ -1,0 +1,1056 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title> </title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/jquery.scrollgress.min.js"></script>
+		<script src="js/jquery.scrolly.min.js"></script>
+		<script src="js/jquery.slidertron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header" class="skel-layers-fixed">
+			<h1><a href="index.html">Computer Science Challanges:<span> How to guide</span></a></h1>				
+			</header>
+
+		<!-- Main -->
+			<section id="main" class="wrapper style1">
+				<header class="major">
+					<h2>Getting started with ammo.js/three.js</h2>
+				</header>
+				<div class="container">
+						
+			<!-- Content -->
+				<section id="content">
+					<h2 align="center">
+						<strong><u>How to get Started with ammo.js/three.js</u></strong>
+					</h2>		
+					<p>
+						<strong><u>Introduction</u></strong>
+					</p>
+					<p><strong>
+						Welcome to my guide on ammo.js and three.js this guide aims to give you 
+						the knowledge on the fundamentals of using these libraries and will show 
+						you some coding examples of these concepts in practice.
+					</strong></p>
+					<p>
+						<strong><u>What are three.js and ammo.js?</u></strong>
+					</p>
+					<p><strong>
+						Ammo and three.js are both JavaScript libraries, three.js is a graphics engine 
+						that allows you to create and display animated 2d graphics in a web browser using webGL, 
+						this is a great library with many users and great projects supporting it so it is not 
+						hard to learn using the resources available one of these resources include the three.js 
+						website ( <a href = "https://threejs.org/">Three.js website</a> ) which contains several examples of what can be done with the 
+						library and has documentation explaining all the code and what it does. Ammo.js is a physics 
+						engine that allows you to create a physics world that can be used in conjunction with a graphics 
+						engine to create graphical physics simulations. This library is a port of the popular c and c++ 
+						bullet physics engine, therefore, it is a niche library with very few guides and projects using 
+						it therefore it can be hard to learn.
+					</strong></p>
+					<p>
+						<strong>
+								There is 4 main part of ammo.js concepts that you should be aware
+								of to get used of this engine these are:
+						</strong>
+					</p>
+					<ul>
+						<li>Rigid Bodies</li>
+						<li>Soft Bodies</li>
+						<li>Constraints</li>
+						<li>Collision detection and filtering</li>
+					</ul>
+					<p>
+						<strong><u>Rigid bodies</u></strong>
+					</p>
+					<p><strong>
+						Bodies in ammo.js are called collision objects or more commonly rigid bodies. Rigid bodies are the objects 
+						in the simulation which move, collide, and have mass, and can have impulses applied to them.
+					</strong></p>
+					<p><strong>
+						There are three types of rigid bodies and many-body shapes can be
+						implemented in ammo.js. The three types of ammo.js bodies are:
+					</strong></p>
+					<ul>
+						<li>
+							Static Rigid bodies – These bodies have a fixed position throughout the physics simulation and cannot be moved 
+							when defining these bodies they have a mass of 0 applied to them.
+						</li>
+						<li>
+							Kinematic Rigid bodies – These bodies are not affected by the physics of the Ammo.js world but are can be animated 
+							during the physics simulation, These bodies are similar to the static rigid bodies in that they have a mass of 0, but 
+							unlike the static rigid bodies, we add the bodies to the rigid bodies array we typically define globally at the start 
+							of our program script to allow the positions of it and its three.js counterpart to be changed in the worlds as it is animated.
+						</li>
+						<li>
+							Dynamic rigid bodies – These are the most intensive rigid body type in ammo.js, these bodies are fully affected by the physics of the world
+							and every body is based on these.
+						</li>
+					</ul>
+					<p>
+						<strong><u>Soft bodies</u></strong>
+					</p>
+					<p><strong>
+						Soft bodies are defined as bodies in computer graphics that visually and
+						realistically represent the motion and properties of deformable objects
+						while being able to some extent retain their shape, these bodies can
+						represent real-life objects balloons, or clothes.
+					</strong></p>
+					<p>
+						<strong><u>Constraints</u></strong>
+					</p>
+					<p><strong>
+						Constraints can be thought of as joints that would be used in real life to
+						connect multiple objects. There are multiple types of constraints in
+						ammo.js to carry out different functions:
+					</strong></p>
+					<ul>
+						<li>
+							Point–to–point constraints - Point-to-point constraints limit the translation 
+							of two pivot points of rigid bodies to match the world space. Using this constraint, 
+							you can create a chain of rigid bodies. This constraint can be useful for creating 
+							something like a robotic arm or in the case of my structures project a plank of wood 
+							using several rigid bodies in columns and rows.
+						</li>
+						<li>
+							Hinge constraints - Hinge constraints are joints that restrict rotation around the pivot of 
+							two bodies to only one axis, therefore this axis could be useful for creating something like a door. 
+							Or even flaps on an airplane model as this constraint also allows the user to specify the limits
+							and motor of the hinge.
+						</li>
+						<li>
+							Slider constraint - The slider constraint allows a body to rotate around one axis and translate 
+							along that axis. This constraint would be useful for creating something like a piston.
+						</li>
+						<li>
+							Cone twist constraints - This cone constraint is a special version of the point-to-point constraint 
+							that adds cone and twist axis limits. The axis for this constraint serves as a twist axis. This constraint 
+							is useful for creating something like a ragdoll.
+						</li>
+					</ul>
+				
+
+					<p>
+						<strong><u>Collision detection</u></strong>
+					</p>
+					<p><strong>
+						Collision detection in ammo.js is a concept that allows for the collision and interaction between objects, 
+						four main concepts aid with collision detection which allows you to show how objects interact in a world.
+					</strong></p>
+					<ul>
+						<li>Contact Manifold check</li>
+						<li>Contact test</li>
+						<li>Contact pair test</li>
+						<li>Ghost objects</li>
+					</ul>
+					<p><strong>
+						To understand each of these I suggest you check out this tutorial:
+						<a
+							target="_blank"
+							href="https://medium.com/@bluemagnificent/collision-detection-in-javascript-3d-physics-using-ammo-js-and-three-js-31a5569291ef"
+						>
+							https://medium.com/@bluemagnificent/collision-detection-in-javascript-3d-physics-using-ammo-js-and-three-js-31a5569291ef
+						</a>
+						. As collision detection is a big topic and 
+						the basics will only be convered in this tutorial.
+					</strong></p>
+					<p>
+						<strong><u>Getting started</u></strong>
+					</p>
+					<p>
+						<strong>
+							Before we start programming some of these concepts you need to first set up your workspace to do this you will need to install ammo.js 
+							and three.js from this link:   when you are done that you can create a folder with whatever project name you want and inside that folder 
+							create an index file and a js folder containing both the ammo.js/ three.js files, for a more in-depth tutorial on setting up your workspace
+							 you can use this link: 
+						</strong>
+						<a
+							target="_blank"
+							href="https://github.com/mattr862/Ammo.js-Three.js/blob/master/Setting%20up%20ammo.js%20Three.js.pdf"
+						>
+							<strong>
+								https://github.com/mattr862/Ammo.js-Three.js/blob/master/Setting%20up%20ammo.js%20Three.js.pdf
+							</strong>
+						</a>
+						<strong>.</strong>
+					</p>
+					<p>
+						<strong>
+							Now that you have set up your folder you will need to also have an IDE that supports javascript and HTML if you do not have this already I 
+							suggest you install visual studio code which is what will be used during this how-to guide: <a href = "https://code.visualstudio.com/download">vs code download</a>.
+						</strong>
+					</p>
+					<p>
+						<strong>
+							Now you are ready to start programming, with your index.html file open
+							in the IDE you should now do the “! Tab” shortcut at the top of the
+							document to auto-create your HTML page. Now you will want to import the
+							libraries you will be using for this body by using the script tag in
+							body and src from the root of the folder to “js/ammo.js” and
+							“js/three.js” and create another script tag that will contain your
+							JavaScript code for this tutorial.
+						</strong>
+					</p>
+					<p>
+						<strong>Your code should look like this:</strong>
+					</p>
+					<div>
+						<div>
+							&lt;!DOCTYPE html&gt;
+						</div>
+						<div>
+							&lt;html lang="en"&gt;
+						</div>
+						<div>
+							&lt;head&gt;
+						</div>
+						<div>
+							&lt;meta charset="UTF-8"&gt;
+						</div>
+						<div>
+							&lt;meta name="viewport" content="width=device-width,
+							initial-scale=1.0"&gt;
+						</div>
+						<div>
+							&lt;title&gt;How to guide&lt;/title&gt;
+						</div>
+						<div>
+							&lt;/head&gt;
+						</div>
+						<div>
+							&lt;body&gt;
+						</div>
+						<div>
+							&lt;script src="js/three.js"&gt;&lt;/script&gt; // this imports the three.js library 
+						</div>
+						<div>
+							&lt;script src="js/ammo.js"&gt;&lt;/script&gt; // imports ammo.js library
+						</div>
+						<div>
+						</div>
+						<div>
+							&lt;script&gt;  // This will contain the program
+						</div>
+						<div>
+							&lt;/script&gt;
+						</div>
+						<div>
+							&lt;/body&gt;
+						</div>
+						<div>
+							&lt;/html&gt;
+						</div>
+					</div>
+					<h3>
+						<strong>
+							In your script tag, you will also want to create an Init function (
+							init short for initiate ) which will contain all the main function
+							calls and enter the statement Ammo().then( Init ); which will initiate
+							ammo.
+							Your script should look like this: 
+						</strong>
+						<figure>
+							<pre>
+	<code contenteditable spellcheck="false">  
+	Ammo().then(Init);  // Initialises ammo.js 
+	function Init(){  // This will contain all calls for your program
+
+	}
+							  </code>
+							</pre>
+						  </figure>
+					</h3>
+					<p><strong>
+						After this you need to declare the global variables for the program, so at
+						the top of the script we we enter the following code:
+					</strong></p>
+					<figure>
+						<pre>
+<code contenteditable spellcheck="false">  
+//variable declaration
+let physicsWorld, controls, scene, camera, renderer; //three.js variables; 
+let rigidBodies = [];  // ammo.js variables; stores all rigid bodies created
+}  
+						  </code>
+						</pre>
+					  </figure>
+					<h3>
+						<strong><u>Declaring variables and setting up graphics</u></strong>
+					</h3>
+					<p>
+						<strong>
+							Before creating the physics world, we need to first create the graphics
+							by creating a world three.js which will be what you see on the browser,
+							To do this we define a setUpGraphics function which instantiates the
+							three main attributes for our three.js world: "the camera, renderer,
+							and scene". We will define all these attributes at the beginning of the
+							script which the world will be based on so their values can be accessed
+							globally. There are many other attributes you can add like lighting and
+							so on but we will not be covering these in this tutorial. In this
+							function, we will instantiate also a clock attribute which will be used
+							later when we begin working with ammo.js.
+						</strong>
+					</p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function setupGraphics()  // This function defines the camera, scene, renderer and lighting attributes for the three.js scene
+{
+	//create clock for timing
+	clock = new THREE.Clock();
+
+	//create the scene
+	scene = new THREE.Scene();
+	scene.background = new THREE.Color( 0xbfd1e5 );
+
+	//create camera
+	camera = new THREE.PerspectiveCamera( 17, window.innerWidth / window.innerHeight, 0.2, 5000 );
+	camera.position.set( 50, 180, -170 );
+	camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+	//Add hemisphere light
+	let hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.1 );
+	hemiLight.color.setHSL( 0.6, 0.6, 0.6 );
+	hemiLight.groundColor.setHSL( 0.1, 1, 0.4 );
+	hemiLight.position.set( 0, 50, 0 );
+	scene.add( hemiLight );
+
+	//Add directional light
+	let dirLight = new THREE.DirectionalLight( 0xffffff , 1);
+	dirLight.color.setHSL( 0.1, 1, 0.95 );
+	dirLight.position.set( -1, 1.75, 1 );
+	dirLight.position.multiplyScalar( 100 );
+	scene.add( dirLight );
+
+	dirLight.castShadow = true;
+
+	dirLight.shadow.mapSize.width = 2048;
+	dirLight.shadow.mapSize.height = 2048;
+
+	let d = 50;
+
+	dirLight.shadow.camera.left = -d;
+	dirLight.shadow.camera.right = d;
+	dirLight.shadow.camera.top = d;
+	dirLight.shadow.camera.bottom = -d;
+	dirLight.shadow.camera.far = 13500;
+
+	//Setup the renderer
+	renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer.setClearColor( 0xbfd1e5 );
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	document.body.appendChild( renderer.domElement );
+											
+	renderer.shadowMap.enabled = true;
+}
+						  </code>
+						</pre>
+					  </figure>
+					<h3>
+						<strong><u>Creating the Physics world</u></strong>
+					</h3>
+					<p>
+						<strong>
+							Now we create the physics world using Ammo.js. This is a separate world
+							from the three.js world which has physics properties and will be the
+							basis for what the objects we create in the three.js world is going to
+							be doing in each frame.
+						</strong>
+					</p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function setupPhysicsWorld()
+{
+	let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),
+	// this attribute sets the collision configuration which allows you to tune
+	// the algorithms used for the full collision detection.
+
+		dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),
+		// The collision dispatcher filters overlapping broadphase proxies so that the collisions 
+		//are not processed by the rest of the system.
+
+		overlappingPairCache = new Ammo.btDbvtBroadphase(),
+		// Broadphase compiles a list of pairs of colliding objects.
+
+		solver = new Ammo.btSequentialImpulseConstraintSolver();
+		// solver is what causes the objects to interact properely it takes into account gravity,
+		//  game logic supplied forces, collisions, and hinge constraints.
+
+	physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+	physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));  // -10 represents earths gravitational force rounded up from 9.8
+	// Finally btDiscreteDynamicsWorld takes all the parameters defined above to create a physics world. 
+	// and set gravity takes 3 parameters, the first and third can be thought of as wind and the second parameters can be thought
+	// of as the gravitational force, that is why in this example the second parameter is equal to -10 as this is the same as earths
+	// gravitational force.
+}
+						  </code>
+						</pre>
+					  </figure>
+					<h3>
+						<strong><u>Creating the render function</u></strong>
+					</h3>
+					<p>
+						<strong>
+							The next step is creating a render frame function, this function will
+							create a render loop which for every frame the scene and camera are
+							updated. However, you may notice that we only use the renderer in this
+							loop meaning that we only render the three.js world without considering
+							the ammo.js world. This is because at the minute there is no need to
+							add physics to the three.js world. After all, there are currently no
+							objects to apply physics to. We will cover this in the creating bodies
+							part of this tutorial.
+						</strong>
+					</p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function renderFrame()
+{
+	renderer.render( scene, camera );
+	requestAnimationFrame( renderFrame );
+}
+						  </code>
+						</pre>
+					  </figure>
+					  <h3>
+						<strong>Updating the physics</strong>
+					</h3>
+					<figure>
+						<figcaption>
+							<strong>
+								This is the final function we are going to be adding to the program
+								the updatePhysics function to set up the world. This function essentially steps through
+								every rigid body in the rigid bodies array and updates the position
+								and rotation of the three.js object depending of the position and
+								rotation of the objects ammo.js counterpart object.
+							</strong>
+						</figcaption>
+					</figure>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function renderFrame(){  // This is a recursive method so for every frame that passes this function is called again.
+	let deltaTime = clock.getDelta();
+	updatePhysics( deltaTime );  //This calls the update physics method passing delta time as a parameter.
+	renderer.render( scene, camera );  //renderer takes the current scene and camera and renders it.
+	requestAnimationFrame( renderFrame ); // when a new frame occurs the function is then called again.
+}
+						  </code>
+						</pre>
+					  </figure>
+					<h3>
+						<strong>Updating the render frame function</strong>
+					</h3>
+					<figure>
+						<figcaption>
+							<strong>
+								The next thing we have to do is update our render frame function so
+								that is updates the physics of objects in its scene. to do this we
+								define a new variable deltaTime and call the update physics
+								function passing delta time as a parameter.
+							</strong>
+						</figcaption>
+					</figure>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function renderFrame(){  // This is a recursive method so for every frame that passes this function is called again.
+	let deltaTime = clock.getDelta();
+	updatePhysics( deltaTime );  //This calls the update physics method passing delta time as a parameter.
+	renderer.render( scene, camera );  //renderer takes the current scene and camera and renders it.
+	requestAnimationFrame( renderFrame ); // when a new frame occurs the function is then called again.
+}
+						  </code>
+						</pre>
+					  </figure>
+					<p>
+						<strong>
+							Now if you open the live server in vs code you should see just a blue screen this 
+							is good it means your code is working right now. The reason that there is nothing 
+							in it is that we have not added anything but the physics and the graphics world itself. 
+							If you don’t get a blue screen at this point like the image below there is an issue 
+							and you should go back and check your code, If you can't open your file using a live 
+							server using vs code I suggest you download <a href = "https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer">
+								live server</a> from vs code.
+						</strong>
+					</p>
+					<a href="#" class="image fit"><img src="images/blue screen.png" alt="" /></a>
+					<p>
+						<strong><u>Ammo.js programming concepts tutorial</u></strong>
+					</p>
+					<p>
+						<strong>
+							In this part of the guide, we will cover examples in the programming of
+							some of the concepts we talked about at the start of the tutorial. You
+							can do these concepts in any order you want if you have the physics and
+							ammo.js world set up as we did in the last section, I also suggest that
+							you follow the static rigid body tutorial as in that we will be
+							creating the static plane in which we require for the majority of the
+							other tutorials.
+						</strong>
+					</p>
+					<p>
+						<strong><u>Rigid bodies</u></strong>
+					</p>
+					<p>
+						<strong><u>Static rigid body</u></strong>
+					</p>
+					<p>
+						<strong>
+							The first body we are going to create is a static rigid body we do this
+							by creating both a cube in ammo.js and three.js with a long x and
+							z-axis and short y-axis( x represents the width of the object, z
+							represents length and y represents height, these three values x,y,z are
+							known as vector3 in programming and can be used to set the position of
+							an object, size, and rotation) and a mass of 0, this mass of 0 will
+							make the body static. This will create the world in which your program
+							will be based.
+						</strong>
+					</p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function createBlock()
+{
+let pos = {x: 0, y: 0, z: 0};
+let scale = {x: 50, y: 2, z: 50};
+let quat = {x: 0, y: 0, z: 0, w: 1};
+let mass = 0;
+
+//threeJS Section
+let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0x3c4145}));
+
+blockPlane.position.set(pos.x, pos.y, pos.z);
+blockPlane.scale.set(scale.x, scale.y, scale.z);
+
+blockPlane.castShadow = true;
+blockPlane.receiveShadow = true;
+
+scene.add(blockPlane);
+
+//Ammojs Section
+let transform = new Ammo.btTransform();
+transform.setIdentity();
+transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+let motionState = new Ammo.btDefaultMotionState( transform );
+
+let colShape = new Ammo.btBoxShape( new Ammo.btVector3( scale.x * 0.5, scale.y * 0.5, scale.z * 0.5 ) );
+colShape.setMargin( 0.05 );
+
+let localInertia = new Ammo.btVector3( 0, 0, 0 );
+colShape.calculateLocalInertia( mass, localInertia );
+
+let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+let body = new Ammo.btRigidBody( rbInfo );
+
+physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );
+								
+							}
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong><u>
+						Now we just must call the functions in the init function for it to show up
+						in the world.
+					</u></strong></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function Init()
+{
+	//code goes here
+	setupPhysicsWorld();
+	setupGraphics();
+	createBlock();
+	renderFrame();
+}
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong>
+						Now the static rigid body will show up on your screen.
+					</strong></p>
+					<a href="#" class="image fit"><img src="images/static rigid body image.png" alt="" /></a>
+					<p>
+						<strong><u>Dynamic rigid body</u></strong>
+					</p>
+					<p>
+						<strong>
+							Now we are going to create a dynamic rigid body, this type of body is
+							created similarly to how a static rigid body is creating the main
+							difference is that it has mass to physics can be applied to it, and as
+							well as this we add is to our rigid Bodies array that we defined
+							earlier this is so we can use this array later so we can update the
+							positions correlating three.js objects of the ammo.js bodies so that we
+							can see the effects of the physics world in the browser for this
+							example we are creating a sphere object instead of a cube object that
+							we used in for making the plank object in the first example.
+						</strong>
+					</p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function createBall(){  // This is just a example function for creating an object in ammo
+
+	let pos = {x: 0, y: 20, z: 0};
+	let radius = 2;
+	let quat = {x: 0, y: 0, z: 0, w: 1};
+	let mass = 1;
+
+	//threeJS Section
+	let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0xff0505}));
+
+	ball.position.set(pos.x, pos.y, pos.z);
+	
+	ball.castShadow = true;
+	ball.receiveShadow = true;
+
+	scene.add(ball);
+
+	//Ammojs Section
+	let transform = new Ammo.btTransform();
+	transform.setIdentity();
+	transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+	transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+	let motionState = new Ammo.btDefaultMotionState( transform );
+
+	let colShape = new Ammo.btSphereShape( radius );
+	colShape.setMargin( 0.05 );
+
+	let localInertia = new Ammo.btVector3( 0, 0, 0 );
+	colShape.calculateLocalInertia( mass, localInertia );
+
+	let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+	let body = new Ammo.btRigidBody( rbInfo );
+
+	physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane );
+	
+	ball.userData.physicsBody = body;
+	rigidBodies.push(ball);
+							}
+						  </code>
+						</pre>
+					  </figure>
+					  <p><strong>Now if you open the project in the live server you should see the dynamic rigid body.</strong></p>
+					  <a href="#" class="image fit"><img src="images/dynamic rigid body object.png" alt="" /></a>
+					<p><strong><u>
+						Kinematic rigid bodies
+					</u></strong></p>
+					<p><strong>
+						To create this body, we are going to create an ammo.js block and three.js
+						block with the same dimensions and add a 0 mass to the block, this will
+						make the block static but for this body, we will add it to our rigid bodies
+						array which will allow us to update the position of the block. To show the
+						animation the difference is we are going to add this object to the rigid
+						bodies array so we can animate it in the render loop. There are multiple
+						options for animating a kinematic rigid body you could use keybinds to move
+						it. Or you could animate it by linking it up with a clock
+					</strong></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function createKinematicBody(){  // This is just a example function for creating a kinematic body in ammo.js
+
+	let pos = {x: 0, y: 20, z: 0};
+	let radius = 2;
+	let quat = {x: 0, y: 0, z: 0, w: 1};
+	let mass = 0;
+
+	//threeJS Section
+	let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0xff0505}));
+
+	ball.position.set(pos.x, pos.y, pos.z);
+	
+	ball.castShadow = true;
+	ball.receiveShadow = true;
+
+	scene.add(ball);
+
+	//Ammojs Section
+	let transform = new Ammo.btTransform();
+	transform.setIdentity();
+	transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+	transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+	let motionState = new Ammo.btDefaultMotionState( transform );
+
+	let colShape = new Ammo.btSphereShape( radius );
+	colShape.setMargin( 0.05 );
+
+	let localInertia = new Ammo.btVector3( 0, 0, 0 );
+	colShape.calculateLocalInertia( mass, localInertia );
+
+	let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+	let body = new Ammo.btRigidBody( rbInfo );
+
+	physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane );
+	
+	ball.userData.physicsBody = body;
+	rigidBodies.push(ball);
+}
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong><u>
+						Constraints
+					</u></strong></p>
+					<p><strong>
+						To start off making constraints we are going to define a function in our
+						program called create constraints, in this function we are going to define
+						two objects a ball and a cube object within proximity. These two objects
+						will be the two that we connect with the constraints.
+					</strong></p>
+					<p><strong><u>
+						P2P constraint
+					</u></strong></p>
+					<p><strong>
+						Creating a point-to-point constraint is simpler than you may believe at
+						first, to do this you first need to define at least 2 objects that you want
+						to connect once this is done you can start creating the joint between the
+						two objects. The function you are going to call for creating the constraint
+						is btPoint2PointConstraint this function takes 4 parameters, the first
+						body, the second body, the first body pivot and the second body pivot. In
+						this example we are creating a sphere body and a block body, we define the
+						body in the ammo.js section of defining these functions so we just pass the
+						sphere body object and the block body object into the parameters, as for
+						the pivots you will need to define them. When we are creating an object
+						pivot the object contains vector3. These vector 3’s represent the position
+						from the origin of the object of that pivot so the sphere pivot vector3
+						(0,0,0) is the center of that object. When creating these pivots the sphere
+						is on top and the block is on the bottom that is why when creating the
+						sphere pivot why give the -radius for the y axis and for the block we give
+						half the x-axis for the other pivot. We then pass these two values into the
+						p2p function. Finally, we can pass this pivot into the scene.
+					</strong></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function createConstraint(){
+	// These are the positions of the two objects that will be connected
+	let pos1 = {x: -1, y: 15, z: 0};
+	let pos2 = {x: -1, y: 10, z: 0};
+
+	// These are the properties for the two objects
+	let radius = 2; // radius creating the sphere
+	let scale = {x: 5, y: 2, z: 2};  // scale for creating the cube
+	let quat = {x: 0, y: 0, z: 0, w: 1};  // This is the rotation, both objects will share this
+	let mass1 = 0;  // this is the mass for the first object the ball. it is 0 therefore it is a static rigid body
+	let mass2 = 1;  // mass for the cube object making is dynamic
+
+	// world transform value.
+	let transform = new Ammo.btTransform();  
+
+	//Sphere Graphics
+	let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0xb846db}));
+
+	ball.position.set(pos1.x, pos1.y, pos1.z);
+
+	ball.castShadow = true;
+	ball.receiveShadow = true;
+
+	scene.add(ball);
+
+	//Sphere Physics
+	transform.setIdentity();
+	transform.setOrigin( new Ammo.btVector3( pos1.x, pos1.y, pos1.z ) );
+	transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+	let motionState = new Ammo.btDefaultMotionState( transform );
+
+	let sphereColShape = new Ammo.btSphereShape( radius );
+	sphereColShape.setMargin( 0.05 );
+
+	let localInertia = new Ammo.btVector3( 0, 0, 0 );
+	sphereColShape.calculateLocalInertia( mass1, localInertia );
+
+	let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass1, motionState, sphereColShape, localInertia );
+	let sphereBody = new Ammo.btRigidBody( rbInfo );
+
+	physicsWorld.addRigidBody( sphereBody);  // This will make the two object collide
+
+	ball.userData.physicsBody = sphereBody;  
+	rigidBodies.push(ball); 
+	
+
+	//Block Graphics
+	let block = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0xf78a1d}));
+
+	block.position.set(pos2.x, pos2.y, pos2.z);
+	block.scale.set(scale.x, scale.y, scale.z);
+
+	block.castShadow = true;
+	block.receiveShadow = true;
+
+	scene.add(block);
+
+	//Block Physics
+	transform.setIdentity();
+	transform.setOrigin( new Ammo.btVector3( pos2.x, pos2.y, pos2.z ) );
+	transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+	motionState = new Ammo.btDefaultMotionState( transform );
+
+	let blockColShape = new Ammo.btBoxShape( new Ammo.btVector3( scale.x * 0.5, scale.y * 0.5, scale.z * 0.5 ) );
+	blockColShape.setMargin( 0.05 );
+
+	localInertia = new Ammo.btVector3( 0, 0, 0 );
+	blockColShape.calculateLocalInertia( mass2, localInertia );
+
+	rbInfo = new Ammo.btRigidBodyConstructionInfo( mass2, motionState, blockColShape, localInertia );
+	let blockBody = new Ammo.btRigidBody( rbInfo );
+
+	physicsWorld.addRigidBody( blockBody );
+	
+	block.userData.physicsBody = blockBody;
+	rigidBodies.push(block);
+
+
+
+	//Create Joints
+	// the pivots of the two objects show where the two objects will connect
+	// we use vector 3 to represent it (0, 0, 0 ) vector represents the center of the 
+	// object, therefore when we want to get to the side of the object we need to use
+	// half that objects length. 
+	let spherePivot = new Ammo.btVector3( 0, - radius, 0 );  // since the sphere is the top object, it uses - radius as the sphere 
+	// pivot connects to the object below it on the y axis
+	let blockPivot = new Ammo.btVector3( - scale.x * 0.5, 1, 0 );  // its the same concept for the cube since the sphere is above it 
+	// we use half its height. 
+
+	let p2p = new Ammo.btPoint2PointConstraint( sphereBody, blockBody, spherePivot, blockPivot);  // this defines the p2p object
+	// its takes 4 parameters the first body, second body, first bodies pivot, and second bodies pivot.
+	physicsWorld.addConstraint( p2p, false );  // this adds the p2p constraint defined above to the world.
+}
+						  </code>
+						</pre>
+					  </figure>
+	
+					<p><strong>
+						Now we will call this function in the init method
+					</strong></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function Init()
+{
+	//code goes here
+	setupPhysicsWorld();
+	setupGraphics();
+	createBlock();
+	createConstraint();
+	renderFrame();
+}
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong>
+						Now you should see this on the screen.
+					</strong></p>
+					<a href="#" class="image fit"><img src="images/p2p Constraint.png" alt="" /></a>
+					<p><strong>
+						<u>Collision detection</u>
+					</strong></p>
+					<p><strong>
+						For this example, we be showing an example of collision detection by using
+						collision groups. Collision groups allow us to choose which objects in the
+						physics world collide with each other. For this example we will be creating
+						three collision groups, we will do this by first adding this code to the
+						global variable declarations at the top of the script.
+					</strong></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+let colGroupPlane = 1, colGroupRedBall = 1, colGroupGreenball = 2;
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong>
+						after this we will create two functions one for creating the green ball and
+						the other for creating the red ball.
+					</strong></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function createGreenBall(){  // creating the green ball.
+
+	let pos = {x: 3, y: 20, z: 0};  // green ball position
+	let radius = 2;  // ball radius
+	let quat = {x: 0, y: 0, z: 0, w: 1};  // rotation
+	let mass = 1;  // 1 mass making it dynamic
+
+	//threeJS Section
+	let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0x00FF00}));  // mesh takes 2 parameters geometry and material
+
+	ball.position.set(pos.x, pos.y, pos.z);
+	
+	ball.castShadow = true;
+	ball.receiveShadow = true;
+
+	scene.add(ball);
+
+	//Ammojs Section
+	let transform = new Ammo.btTransform();
+	transform.setIdentity();
+	transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+	transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+	let motionState = new Ammo.btDefaultMotionState( transform );
+
+	let colShape = new Ammo.btSphereShape( radius );
+	colShape.setMargin( 0.05 );
+
+	let localInertia = new Ammo.btVector3( 0, 0, 0 );
+	colShape.calculateLocalInertia( mass, localInertia );
+
+	let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+	let body = new Ammo.btRigidBody( rbInfo );
+
+	physicsWorld.addRigidBody( body);
+	
+	ball.userData.physicsBody = body;
+	rigidBodies.push(ball);
+}
+
+function createRedBall(){  // creating the red ball
+	let pos = {x: -3, y: 20, z: 0};  
+	let radius = 2;  
+	let quat = {x: 0, y: 0, z: 0, w: 1};  
+	let mass = 1;
+
+	//threeJS Section
+	let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: 0xff0505}));
+
+	ball.position.set(pos.x, pos.y, pos.z);
+	
+	ball.castShadow = true;
+	ball.receiveShadow = true;
+
+	scene.add(ball);
+
+	//Ammojs Section
+	let transform = new Ammo.btTransform();
+	transform.setIdentity();
+	transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+	transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+	let motionState = new Ammo.btDefaultMotionState( transform );
+
+	let colShape = new Ammo.btSphereShape( radius );
+	colShape.setMargin( 0.05 );
+
+	let localInertia = new Ammo.btVector3( 0, 0, 0 );
+	colShape.calculateLocalInertia( mass, localInertia );
+
+	let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+	let body = new Ammo.btRigidBody( rbInfo );
+
+	physicsWorld.addRigidBody( body );
+	
+	ball.userData.physicsBody = body;
+	rigidBodies.push(ball);
+}
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong>
+						Now finally to complete this part of the tutorial we will now add the
+						collision groups to each of the physics bodies. We do this by editing the
+						physicsWorld.addRigidBody function. We will be adding to these parameters
+						both the collision group that the body is in and the collision group it
+						should be interacting with.
+					</strong></p>
+					<p><strong><u>
+						Create block function.
+					</u></strong></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+physicsWorld.addRigidBody( body, colGroupPlane, colGroupGreenball );
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong><u>
+						Green ball function
+					</strong></u></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+physicsWorld.addRigidBody( body, colGroupGreenball, colGroupPlane );
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong>
+						Red ball function
+					</strong></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+physicsWorld.addRigidBody( body, colGroupRedBall, colGroupPlane);
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong>
+						Now in your init function you just need to call the two functions which
+						made the two balls for your world with the other important world defining
+						functions.
+					</strong></p>
+					<figure>
+						<pre>
+						  <code contenteditable spellcheck="false">  
+function Init()
+{
+	//code goes here
+	
+	setupPhysicsWorld();
+	setupGraphics();
+	createPlane();
+	createGreenBall();
+	createRedBall();
+	renderFrame();
+}
+						  </code>
+						</pre>
+					  </figure>
+					<p><strong>
+						finally, now if you open your program you should now notice that there is 2
+						ball objects in the world and a static plane, both ball object will fall
+						but only the green ball will collide with the plane the red ball will fall
+						threw the plane because its collision group is the same value as the static
+						plane.
+					</strong></p>
+					<a href="#" class="image fit"><img src="images/collision group example image.png" alt="" /></a>
+					<p><strong>
+						These collision groups can be used for many purposes one example is for in
+						a shooter game when you don’t want your bullets to collide with your
+						teammates, therefore you can make the bullets of one team the same
+						collision group, so they don’t collide.
+					</strong></p>
+					<p><strong>
+						Thank you for reading my tutorial hopefully, this has given you the
+						information you need in order to get started with confidence using ammo.js,
+						I suggest you follow this link
+						<a target="_blank" href="https://lo-th.github.io/Ammo.lab/">
+							https://lo-th.github.io/Ammo.lab/
+						</a>
+						to have a look at some of the more advanced projects you can make using the
+						information you have just learned it contains an example of soft bodies and
+						all the types of constraints discussed in this tutorial.
+					</strong></p>
+				</div>
+			</section>
+	</body>
+</html>
