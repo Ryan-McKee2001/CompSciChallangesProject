@@ -1,0 +1,891 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Structures with ammo.js and three.js project blog</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="0530bb52-33b0-4fb5-886b-582e35ef09dd" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/gradients_11.jpg" style="object-position:center 40%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">🖥️</span></div><h1 class="page-title">Structures with ammo.js and three.js project blog</h1></header><div class="page-body"><h2 id="dca3b3ed-edb7-4eaa-840a-c44e8569b396" class=""><span style="border-bottom:0.05em solid">Introduction</span></h2><p id="450fdaf0-3f05-4b29-9d35-da345fa869a0" class="">This project I started as a part of computer science challenges it is a first-year module in which you learn and produce a project using technology you have never used before challenging you to go out of your comfort zone in learning new technologies and to solve problems you have never solved before. For this module, I was assigned the Structures project as a part of the topic choice of robotics and manufacturing topic I have an interest in.</p><h2 id="36aec121-5ac3-4dfc-8011-8f9423e35291" class=""><span style="border-bottom:0.05em solid">Project objective</span></h2><p id="b102ce02-17fa-4fa6-9d9a-d1c355312f7d" class=""><strong>Model cheaply purchasable components e.g., 2x4 planks, nuts and bolts and create them in three.js/bullet with appropriate physics properties, including weight, friction. Objects should include costs and links for purchase.</strong></p><p id="3bc9db1c-7434-409d-bda8-befb274a80ce" class=""><strong>Create models of physical parts with appropriate bending, twisting and breaking effects (model that they can occur) so that structures of suitable strength can be developed and limitations under forces can be incorporated into the design of machines.</strong></p><p id="aff9ae41-f71c-4d61-897c-053b008a47d6" class=""><strong>Creating models of physical attachments e.g. nuts and bolts, nails, glue etc. that have parameters and can replicate plausible behaviours when subject to physical forces within a physics engine (including vibration)</strong></p><h2 id="3fffc27a-69ca-4c8a-abab-d9c89b83311a" class="">Three and ammo.js</h2><p id="f078b3d1-ba09-46d1-93c9-362c4ea25aba" class="">To carry out this task I was assigned to use three.js and ammo.js; both JavaScript libraries; Three.js is used to create 3d graphics in a web browser and ammo.js to create a physics world these two libraries can be used in conjunction to display bodies I want to simulate and show how they are affected by physics. This task was overwhelming at first for me as I was not only new to physics and graphics engines but also, I had never used JavaScript and have no background in robotics and manufacturing, so as a prerequisite I had to learn this JavaScript. To learn this language, I followed a YouTube series created by a popular YouTube called mosh ( Mosh JavaScript tutorial), This tutorial helped me pick up the basics of JavaScript like for loops, if statements, and creating objects, The tutorial also introduced me to the IDE I would be using for the duration of the project visual studio code. After getting comfortable with both JavaScript and visual studio code I had to move onto the next step learning three.js luckily three.js is a widely used library with many examples and tutorials ( three.js examples and documentation ) which I made use of. For me I have a preference for learning from YouTube tutorials, so I found a YouTube tutorial which I followed which covered the basics of three like creating a world creating your first objects, and so on. ( three.js tutorial ) . The next step I then moved on to learning the ammo.js library the issue I found with ammo.js is that unlike three.js there is hardly any documentation examples and tutorials to use, I struggled at first and found it overwhelming but through my searching, I found good tutorials which covered the basics well of ammo.js like constraints, objects, collision detection and filtering which got me started learning this library( ammo.js tutorial ).</p><h2 id="df2cd488-a488-48ce-93d2-a40e83109173" class=""><span style="border-bottom:0.05em solid">Project goals</span></h2><p id="1ecbddc7-5166-4044-886f-f5e8e40d1ecf" class="">During this project, the main objective is to model cheaply purchasable components starting with 2<em>4 planks using ammo and three. So far I have made some progress but the main idea for creating the planks for the project is to use dynamic rigid bodies connected with point 2 point constraints (constraints are the connectors between bodies in ammo.js like joints in real life) connecting each row of planks to the other columns and connect the columns to the rows of dynamic body, This will allow me to create bending for the object twisting and potentially breaking when certain forces are applied to the plank by creating constraints for the p2p for when certain constraints are applied to help with the twisting and bending of the plank. I also plan to add springs to the connections this will allow the object connections to remain straight if only small amounts of force are applied and if enough force is applied that the plank should bend the springs will allow the object to return to its original default position when the bending is done, the spring constraints in the future may also help with creating vibrations for the plank. To simulate the weight, I could look up planks with similar properties 2</em>4 inches, as I&#x27;m starting with trying to recreate a plank of wood, I could use the weights of real-life planks of the length and height and apply the appropriate mass to each of the 1<em>1</em>1 body, I plan to do the same for other types of planks including metal by giving the bodies making up the plank different constraints for breaking, bending and twisting. I plan that other hard bodies like the nuts and bolts follow the same formula as the plank of course having different shapes and constraints, however for something like creating glue I think you could do this by using soft bodies instead of rigid bodies.</p><h2 id="cb6b097f-e939-487b-a70f-c23c0a714de0" class=""><span style="border-bottom:0.05em solid">Project code</span></h2><h3 id="6ce21316-a213-43c2-8c4f-10e1ccb00095" class="">Setting up the library’s and ide</h3><p id="3a5d2088-7158-4c83-b186-a11dab8e3732" class="">Starting off creating my simulation I had to set up the workspace to do this I created a folder for my project which contained an index.html file and js folder containing the libraries ammo.js and three.js that I would be using to create my project. I then installed vs code and opened the project. From there I began setting up the html page, creating 3 scripts 2 which inport the ammo.js and three.js libraries and the last one for the code below  I started the code in the third script by defining the variables and creating the init function</p><p id="4b1b0027-2180-4831-af53-03591d45023b" class=""><code>let physicsWorld, controls, scene, camera, renderer;  // Three.js variables</code></p><p id="b72accc6-057a-4660-82e4-6294bd5997d4" class="">l<code>et rigidBodies = [];  // Ammo.js variables</code></p><p id="91e39db7-3cc5-4c78-aa14-99e9200bf155" class=""><code>Ammo().then(Init);  // Initialises ammo.js 
+function Init(){  // This will contain all calls for your program
+}</code></p><h3 id="f1e011f1-1ae3-4d67-b700-28c1cadbf001" class="">Creating the three.js world</h3><p id="259de05f-f262-4ca2-a239-1adbdf3b950a" class="">Creating the three.js world was just a matter of creating a function containing statements setting up the scene, camera, renderer, and some lighting and then calling that function in the Init function.</p><pre id="be2a5784-8815-4728-b3c5-d851dd37899a" class="code"><code>// This function creates the three.js graphics world`
+function setupGraphics(){
+//create clock for timing`
+clock = new THREE.Clock();`
+
+//create the scene
+scene = new THREE.Scene();
+scene.background = new THREE.Color( 0xbfd1e5 );
+
+//create camera
+camera = new THREE.PerspectiveCamera( 10, window.innerWidth / window.innerHeight, 0.2, 5000 );
+camera.position.set( 50, 180, -170 );
+camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+//Add hemisphere light
+let hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.1 );
+hemiLight.color.setHSL( 0.6, 0.6, 0.6 );
+hemiLight.groundColor.setHSL( 0.1, 1, 0.4 );
+hemiLight.position.set( 0, 50, 0 );
+scene.add( hemiLight );
+
+//Add directional light
+let dirLight = new THREE.DirectionalLight( 0xffffff , 1);
+dirLight.color.setHSL( 0.1, 1, 0.95 );
+dirLight.position.set( -1, 1.75, 1 );
+dirLight.position.multiplyScalar( 100 );
+scene.add( dirLight );
+
+dirLight.castShadow = true;
+dirLight.shadow.mapSize.width = 2048;
+dirLight.shadow.mapSize.height = 2048;
+
+let d = 50;
+dirLight.shadow.camera.left = -d;
+dirLight.shadow.camera.right = d;
+dirLight.shadow.camera.top = d;
+dirLight.shadow.camera.bottom = -d;
+dirLight.shadow.camera.far = 13500;
+
+//Setup the renderer
+renderer = new THREE.WebGLRenderer( { antialias: true } );
+renderer.setClearColor( 0xbfd1e5 );
+renderer.setPixelRatio( window.devicePixelRatio );
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+renderer.shadowMap.enabled = true;
+}</code></pre><h3 id="87a32329-4e05-4167-a8a2-3503168b585e" class="">Creating the ammo.js world</h3><p id="d52d402b-ad5e-49a8-8c2e-2f010478ec25" class="">To create the ammo.js I had to create another function containing the declaration of parameters for the statement creating the physics world.</p><p id="71604f57-c9ac-4bac-8612-019111fcb55e" class="">
+</p><pre id="9fb17ed8-b554-4287-8f9c-157c41b4bb73" class="code"><code>// This function creates the ammo.js physics world
+
+function setupPhysicsWorld()
+
+{
+
+let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),  // this attribute sets the collision configuration which allows you to tune
+
+// the algorithms used for the full collision detection
+
+dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),   // The collision dispatcher filters overlapping broadphase proxies so that the collisions
+
+//are not processed by the rest of the system.
+
+overlappingPairCache = new Ammo.btDbvtBroadphase(),   // Broadphase compiles a list of pairs of colliding objects.
+
+solver = new Ammo.btSequentialImpulseConstraintSolver();
+
+/*solver is what causes the objects to interact properely it takes into account gravity,
+
+game logic supplied forces, collisions, and hinge constraints.*/
+
+physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+
+physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
+
+/*Finally btDiscreteDynamicsWorld takes all the parameters defined above to create a physics world.
+
+and set gravity takes 3 parameters, the first and third can be thought of as wind and the second parameters can be thought
+
+of as the gravitational force, that is why in this example the second parameter is equal to -10 as this is the same as earths
+
+gravitational force.*/
+
+}</code></pre><h2 id="a65e1a99-d0d2-492d-b690-928f3221daa6" class="">Creating the on window resize event handler</h2><p id="ff4a882c-e97c-4533-9628-7fb53af5e559" class="">In the variable declaration part of the script I created an event handler which would call a method onWindowResize which would resize the renderer for the project whenever the window size has been changed</p><p id="19637cf7-6872-4b6a-87fe-d3821a8f3cd7" class=""><code>window.addEventListener(&#x27;resize&#x27;, onWindowResize, false); // Calls a function</code></p><p id="dc04c901-c65e-4e53-aeb1-34b6f07bcdcc" class=""><code>// which resizes the renderer size when the webpage size is changed.</code></p><pre id="7d13784d-d7ca-4847-ab96-77181b5d2648" class="code"><code>//This is a function which will be called a an event listener to resize the tab.
+        function onWindowResize(){
+            camera.aspect = window.innerWidth/window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth,window.innerHeight);
+        }</code></pre><p id="4c03f469-9614-4045-9e8c-18c83c76de5b" class="">
+</p><h3 id="f6cb9322-b25b-4bbc-8cee-2fa30d297622" class="">Creating the static world plane</h3><p id="e8f78361-03c0-4ee3-8319-c4c098948854" class="">Creating the plane, I just created a static rigid body cube object with a big x and z value and 1 for the y axis representing the height and I set the mass to 0 to make it static.</p><pre id="dd9d881b-5919-4da3-854d-e1ae73aa5b08" class="code"><code>// This function creates the static rigid body which will be the plane the world is based on.
+
+function createBlock()
+
+{
+let pos = {x: 22, y: 0, z: 16};  // position
+let scale = {x: 50, y: 2, z: 50};  // scale
+let quat = {x: 0, y: 0, z: 0, w: 1};  // rotation
+let mass = 0;  // static mass
+
+//threeJS Section
+let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(), new THREE.MeshPhongMaterial({color: 0x3c4145}));
+blockPlane.position.set(pos.x, pos.y, pos.z);
+blockPlane.scale.set(scale.x, scale.y, scale.z);
+blockPlane.castShadow = true;
+blockPlane.receiveShadow = true;
+scene.add(blockPlane);
+
+//Ammojs Section
+let transform = new Ammo.btTransform();
+transform.setIdentity();
+transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+let motionState = new Ammo.btDefaultMotionState( transform );
+let colShape = new Ammo.btBoxShape( new Ammo.btVector3( scale.x * 0.5, scale.y * 0.5, scale.z * 0.5 ) );
+colShape.setMargin( 0.05 );
+let localInertia = new Ammo.btVector3( 0, 0, 0 );
+colShape.calculateLocalInertia( mass, localInertia );
+let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+let body = new Ammo.btRigidBody( rbInfo );
+physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );  // adds the block plane to the colGroupPlane
+// collision group and sets it to collide with col, colGroupPlankBlocks
+}</code></pre><h3 id="96020c35-f7e1-49a1-a9b9-12f2a5314730" class="">Animating the rigid bodies in the world</h3><p id="8664997c-61d6-44cd-ae68-651b08ef60f1" class="">To do this I created a recursive render frame function which instantiated a clock and called another method I called update Physics passing the clock as the parameters this method got all the positions of the ammo.js bodies in the world and updated the positions of three.js to match this, then the render loop rendered the scene and camera updating the world on the browser to match that in the physics world.</p><pre id="10836177-52c2-4834-b8eb-e77ee8cadae3" class="code"><code>// This is a recursive function that updates the graphics for every browser frame.
+        function renderFrame() 
+        {
+            let deltaTime = clock.getDelta();
+            updatePhysics(deltaTime);
+            renderer.render( scene, camera );
+            requestAnimationFrame( renderFrame );
+        }</code></pre><pre id="eb14332c-153e-46a6-966f-c5e9948e0bf6" class="code"><code>// This function steps through every rigid body and updates the correlating three.js
+        // object position. 
+        function updatePhysics( deltaTime )  
+        {
+            // Step world
+            physicsWorld.stepSimulation( deltaTime, 10 );
+    
+            // Update rigid bodies
+            for ( let i = 0; i &lt; rigidBodies.length; i++ )  // This loop sets through every rigid bodyin the three scene
+            {
+                let objThree = rigidBodies[ i ];  // stores the current three object value
+                let objAmmo = objThree.userData.physicsBody;  // stores the correlating ammo.js object
+                let ms = objAmmo.getMotionState();
+                if ( ms )
+                {
+                    ms.getWorldTransform( tmpTrans );
+                    let p = tmpTrans.getOrigin();  // p stores the ammo.js object vector3 position
+                    let q = tmpTrans.getRotation();  // q stores the ammo.js object vector3 rotation
+
+                    objThree.position.set( p.x(), p.y(), p.z() );  // Sets the position of the correlating three object
+                    // the same as the ammo.js object vectors.
+
+                    objThree.quaternion.set( q.x(), q.y(), q.z(), q.w() );  // Sets the rotation of the three object
+                    // to be equal to the ammo.js object rotation.
+                }
+            }
+        }</code></pre><h3 id="c1806a09-3edf-437f-8d84-2627e2602d78" class="">Creating the plank</h3><p id="00e49ead-b0c9-4292-a313-ab2fefbc4634" class="">
+</p><p id="d0156ac4-d79d-40f4-bbe1-f11609271a73" class="">When I was deciding how I should make the plank object I ran into the issue of what I should do to represent this object as there were many options and no clear solution to doing this, I ended up deciding that I should try to use several rigid bodies connected with p2p constraints and containing springs which allow the planks connections to simulate the changes in shape when physics are applied and to allow it to some degree to return to its original form like a soft body unless of course a high enough force was applied to the object that would make the plank permanently bent.</p><p id="a3c6d32e-0b1c-44db-b4bb-b85c6ba8b8f3" class="">To Start I created two variables for containing the length and width of the planks in this project represented length and width are measured in inches, Then using this information I created a 2*4 2d array the same amount of arrays as the length variable previously instantiated, and in each of these arrays the same amount of elements as the value of the width variable because 2d arrays are not a built-in function in JavaScript I used this method of creating the 2d arrays, the use of a 2d array was suggested by the module lecturer after I could not figure out how I would add a connection between each of the rigid bodies making up the planks.</p><pre id="bf0e5fd6-ade4-454e-bda0-93c05457f740" class="code"><code>// This function creates the plank simulation
+        function createPlank(){
+            let width = 2;  // This is the width of the plank in inches
+            let length = 4;  // This is the length of the plank in inches
+            let posy = 10;  
+            let mass = 1;
+
+            let scale = { x:1,y:1,z:1}; // scale for each block
+
+            let blockArray = [];  // This will be the 2d array for the block objects to be stored
+
+            // In javascript 2d arrays are not a built in therefore
+            // I need to create my own.
+            // This for loop creates the same amount of arrays inside blockArray
+            // as the length and the same amount of elements in each array as the width
+            for (let i = 0; i &lt; length; i++){
+                blockArray[i] = [];
+                for ( let x = 0; x &lt; width; x++){
+                    blockArray[i][x] = null;
+                }
+            }</code></pre><p id="9508295d-4b5b-496e-9d4b-6c165175e639" class="">
+</p><p id="e1cf9774-040b-42a4-83e4-2a374d14a61d" class="">
+</p><p id="133c41c7-4c97-4759-92c9-5c162a8060b2" class="">After creating the 2d array the next problem was creating and adding block for the plank to the 2d array to do this I created a nested for loop that went through every array in BlockArray and for every element created a block with the same size defined in the variable declaration but for the position of the block I used the x variable for the x vector and the z variable for the z vector declared in the 2 for loops.</p><pre id="8329ec21-6e00-49dc-a799-c91114ee863a" class="code"><code>// the nested for loop creates a block for every element in each of the 
+            // arrays within block array.
+            for( let z = 0; z &lt; length; z++ ){  // loops up will it is equal to length
+                for( let x = 0; x &lt; width; x++ ){  // loops till it is equal to width
+                    console.log(&#x27;x: &#x27;+x);  
+                    // three.js section
+                    let block = new THREE.Mesh( new THREE.BoxBufferGeometry(1,1,1), new THREE.MeshPhongMaterial({color: 0x964B00}) );
+                    block.position.set(x-3, posy, z-10);
+
+                    block.castShadow = true;
+                    block.receiveShadow = true;
+
+                    scene.add( block );
+
+                    //Ammojs Section
+                    let transform = new Ammo.btTransform();
+                    transform.setIdentity();
+                    transform.setOrigin( new Ammo.btVector3( x-3, posy, z-10 ) );
+                    transform.setRotation( new Ammo.btQuaternion( 0, 0, 0, 1 ) );
+                    let motionState = new Ammo.btDefaultMotionState( transform );
+
+                    let blockShape = new Ammo.btBoxShape(new Ammo.btVector3( 0,0,0 ));
+                    blockShape.setMargin( 0.05 );
+
+                    let localInertia = new Ammo.btVector3( 0, 0, 0 );
+                    blockShape.calculateLocalInertia( mass, localInertia );
+
+                    let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, blockShape, localInertia );
+                    let body = new Ammo.btRigidBody( rbInfo );
+
+
+                    physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane ); // sets the block to be apart of the
+                    // colGroupPlankBlocks collision group set to collide with colGroupPlane
+                        
+                    block.userData.physicsBody = body;
+
+                    rigidBodies.push( block );  // adds the block to the rigid body array so it can
+                    // be animated in the renderer.
+
+                    blockArray[z][x] = body;  // sets the current block body to the current 
+                    // block column and row in the blockArray
+                }
+            }</code></pre><p id="d604f7c4-9e2f-41ec-83a7-5d9f5461f62f" class="">
+</p><p id="718b47b8-163c-4f17-8494-7df22d07e6cf" class="">Next, I created the connections between the rigid bodies in the blockArray to do this I started with doing a nested for loop which for each array in block array iterated through each of the elements connecting them so that all the rows were connected together and I created another nested for loop which iterated through each element connecting each of the arrays in block array. therefore connecting the columns to each other connecting everything together.</p><pre id="266d50a6-a0ea-4fbd-8bcb-e11a7a0ac07b" class="code"><code>// Checks if width and length is greater than 1 so no errors occur
+            if( length &gt; 1 &amp;&amp; width &gt; 1){
+                if(length &gt; 1){  // loops through each column and connects rows
+                    for ( let len = 0; len &lt; length; len++){
+                        for ( let wid = 0; wid &lt; width - 1; wid ++){
+                            // pivot declaration
+                            let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
+                            let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);
+                            // Creates a p2p constraint connecting both bodys
+                            let p2p = new Ammo.btPointToPointConstraint( blockArray[len][wid], blockArray[len][wid+1], blockPivot1, blockPivot2 );  // coordinate referential last parameter, one is the
+                            // Adds the constraint to the physics world
+                            physicsWorld.addConstraint(p2p);
+                        }
+                    }
+                }
+                else
+                    console.log(&#x27;block length is not greater than 1&#x27;);  
+
+                let jointTransform = new Ammo.btTransform();
+
+                // checks if width is greater than 1 so no error occurs
+                if(width &gt; 1){
+                    for ( let wid = 0; wid &lt; width-1; wid++){  // loops through each row and connects columns
+                        for ( let len = 0; len &lt; length; len ++){
+                            // declaring pivots
+                            let blockPivot1 = new Ammo.btVector3( scale.x * 0.5, 1, 1 );
+                            let blockPivot2 = new Ammo.btVector3( - scale.x * 0.5, 1, 1);  
+
+                            // creating the p2p object
+                            let p2p = new Ammo.btPointToPointConstraint( blockArray[len][wid], blockArray[len][wid+1], blockPivot1, blockPivot2 );  
+                            // Adds the constraint to the physics world
+                            physicsWorld.addConstraint(p2p);
+                        }
+                    }
+                }
+                else
+                    console.log(&#x27;block width is not greater than 1&#x27;);
+            }
+            else
+								console.log(&#x27;invalid plank length or width, neither of these values can be less than 1&#x27;);</code></pre><h3 id="d429a1e7-0c41-4683-9437-ce8cc7e6fef6" class="">Adding collision constraints</h3><p id="02dddf0c-c0f7-4cb8-9d5e-d6064d85e3b6" class="">During the project I had issues with the blocks falling through the static plane I realized after some code searching that my issue was my collision groups, By default, the collision group for the static plane and the blocks making up the plank were the same so they would not collide to change this I created 2 collision groups for my project and set the collision group of the static plane to colGroup1 and the blocks to colGroup2.</p><p id="09094341-b3bd-4942-b3e6-3aed5ea1ad9e" class=""><code>let colGroupPlane = 1, colGroupPlankBlocks = 1; // Ammo.js collision groups declaration</code></p><p id="dd8769b9-68c5-4839-8c16-626493f95ede" class="">
+</p><p id="c1d20857-bcf9-4b40-adf6-54e7f03aa864" class=""><code>physicsWorld.addRigidBody( body, colGroupPlane, colGroupPlankBlocks );  // adds the block plane to the colGroupPlane</code></p><p id="80b11987-0bcf-4dd3-967e-eebd7680de91" class=""><code>// collision group and sets it to collide with col, colGroupPlankBlocks</code></p><p id="11f6ec41-6704-4511-930c-5eaf161a4a37" class="">
+</p><p id="f8b9af73-b409-407d-b3c4-68519fc0f9de" class=""><code>physicsWorld.addRigidBody( body, colGroupPlankBlocks, colGroupPlane ); // sets the block to be apart of the</code></p><p id="01ff1132-31f2-4e3a-899f-42531b0a8d8d" class=""><code>// colGroupPlankBlocks collision group set to collide with colGroupPlane</code></p><p id="d2bf6fe8-b040-4ea6-b5ad-4a2d1b2e3cc5" class="">
+</p><figure id="3af80e5a-2d65-4545-a5f0-24283681bc89" class="image"><a href="Structures%20with%20ammo%20js%20and%20three%20js%20project%20blog%203af80e5a2d654545a5f024283681bc89/Untitled.png"><img style="width:1104px" src="Structures%20with%20ammo%20js%20and%20three%20js%20project%20blog%203af80e5a2d654545a5f024283681bc89/Untitled.png"/></a></figure><h2 id="7de1406b-f27c-4f44-a126-fbd531ca394c" class=""><span style="border-bottom:0.05em solid">Future ideas</span></h2><p id="64c6f091-f36f-4885-9c92-b36dcbe7f320" class="">After a lot of struggle with things like spring constraints using ammo I was recently I was introduced to a library called enable3d by my module lecturer which is a new library at the time of making this blog that simplifies using ammo.js and three.js at first, I struggled to get it set up due to the lack of documentation because the library is new and some issues with installing dependencies, however, I figured it out and documented it in this guide:</p><figure id="218e7d69-1fd3-4605-ad5e-a76b33c3aa25" class="link-to-page"><a href="https://www.notion.so/How-to-guide-Getting-started-with-enable3d-218e7d691fd34605ad5ea76b33c3aa25">How to guide- Getting started with enable3d</a></figure><p id="4f84bfe0-5ba1-4ad9-908f-c953250eaf45" class="">as well as documenting setup I also figured out how to use key concepts like rigid bodies, constraints, and collision detection most of which I documented in the guide above. Due to the time constraints of the project, I did not have time to transfer my code simplifying the ideas I have already started putting into motion using ammo.js and three.js however in the future I think this project should continue using this enable3d and I have no doubt that this library will only become easier to use as more and more documentation over time. After transferring the code to enable3d I think the next step should be adding spring constraints between the blocks making up the plank with high resistance to elasticity.</p><p id="7307685a-a28f-4112-bb72-660ec8334f6a" class="">
+</p><h3 id="5ec360a6-82e5-49c5-8111-1ce93c8a0d01" class="">thanks for reading my blog.</h3><p id="f695c6b7-407c-46e2-adb3-29eb8a7554d3" class="">
+</p></div></article></body></html>
