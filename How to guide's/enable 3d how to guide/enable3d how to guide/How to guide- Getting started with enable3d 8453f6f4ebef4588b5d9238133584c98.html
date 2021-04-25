@@ -1,0 +1,641 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>How to guide- Getting started with enable3d</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="218e7d69-1fd3-4605-ad5e-a76b33c3aa25" class="page sans"><header><img class="page-cover-image" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/enable3d-logo.png" style="object-position:center 50%"/><h1 class="page-title"><span style="border-bottom:0.05em solid">How to guide- Getting started with enable3d</span></h1></header><div class="page-body"><p id="723c063c-a1b6-4e6f-a4d2-b98d65194ee3" class="">Hi, and welcome to my guide on getting started with enable3d(<a href="https://enable3d.io/">https://enable3d.io/</a>). Enable3d is an open-source and free library created to allow users to easily add physics through the use of physics to graphics in a web browser. We do this through the use of two libraries. The physics library called ammo.js is a javascript port of the popular c physics engine bullet physics and three.js a popular javascript graphics library that will be used in conjunction with ammo.js (<a href="https://github.com/kripken/ammo.js/">https://github.com/kripken/ammo.js/</a>) to create a representation of a physics world in a browser. three.js is a very popular graphics library for javascript used by many great organizations like NASA, tesla, space x, Maserati this library has many online examples and tutorials which you can find on this website: <a href="https://threejs.org/">https://threejs.org/</a>.</p><hr id="135176b2-b92c-4f58-8656-7e2baf4232fc"/><h2 id="4955ba6a-380e-4333-bc39-5e199c60d047" class=""><span style="border-bottom:0.05em solid">Installation guide</span></h2><p id="66450683-1432-43c6-bcf3-00363cf51f90" class="">Before we can get started there are a few pre-requisites which we need to do in order for our enable3d project to work.</p><h3 id="93ecc51f-3a6f-4166-8ab4-6bd983475c87" class=""><span style="border-bottom:0.05em solid">Installing node.js</span></h3><p id="be86342d-d5eb-40ea-a5a9-0bb5f571aec7" class="">First, you need to install a live server to run your website on, In this tutorial, we will be using node.js which is a popular javascript runtime environment that will allow you to run your projects easily and efficiently. You can download node.js from this link: <a href="https://nodejs.org/en/">https://nodejs.org/en/</a>. ( Because we are using node.js it is best that your preferred browser is chrome as node runs best on it, You can change this in your operating system settings, and if you don&#x27;t already have Chrome installed you can download it from this link) </p><h3 id="97c35a1f-9373-4f23-9fdf-7ee21c110ae6" class=""><span style="border-bottom:0.05em solid">Installing vs code</span></h3><p id="a8f9c354-ed83-4393-8338-5a971042c8dd" class="">Once you have downloaded node.js We can start setting up your environment for this tutorial the IDE we will be using is vs code which you can download from this link:  <a href="https://code.visualstudio.com/download">https://code.visualstudio.com/download</a>. </p><h3 id="5afdc273-51b9-4388-9d4f-d85dd111d23f" class=""><span style="border-bottom:0.05em solid">Installing the enable3d project template</span></h3><p id="e8d1143c-557e-4fbb-8baa-04fa621f6984" class="">To begin your enable3d project I suggest you first download this folder from GitHub you can either download the project folder off Github and open the folder in vs code or clone the project using Github desktop. This project folder is going to be the template on which our project will be based on. <a href="https://github.com/tamani-coding/enable3d-physics-examples">https://github.com/tamani-coding/enable3d-physics-examples</a>. To clone this the best way is to install GitHub desktop and then clone the project by entering the URL. after this you should have your project folder open in GitHub desktop which you can then select open visual studio code which will open the project folder in vs code</p><h3 id="94530d35-66e4-42ba-badd-6d26d5f06480" class=""><span style="border-bottom:0.05em solid">Installing project dependency&#x27;s</span></h3><p id="9119d11d-5e52-42de-a918-32b147c15dbc" class="">Now that you have completed all the other pre-requisites and opened your folder in vs code you will have to open the terminal on vscode you can do this by entering the shortcut or selecting the new terminal option from the terminal dropdown. Now you will have to enter these commands in order in the terminal to install the enable3d modules which will allow you to work with ammo.js/three.js using enable3d and start your server.</p><p id="12cf2515-5763-48bd-88d9-83c0557266ca" class="">( It is best if you run your node server using chrome as node server run best on it and on using other browsers like firefox can output some strange results. You can change the preferred browser in your operating systems settings. )</p><h3 id="9db1a4a9-6613-46eb-90f7-aea3277358bc" class="">terminal commands</h3><ul id="5514fee4-b4f7-4403-8521-88ab1f78a56b" class="bulleted-list"><li><code>npm install enable3d</code></li></ul><ul id="d5f94552-9348-470c-ae22-b7713c47cbef" class="bulleted-list"><li><code>npm install</code></li></ul><h3 id="13d469ff-0e29-4515-8b86-817660ed5349" class="">If an error occurs</h3><p id="9ff77ee9-9f27-4525-96cb-c1ff91923fa3" class="">If you get an error in the terminal when trying to start your node server or when you are installing dependencies this is likely not a problem with npm this should fix your issue:</p><ul id="5a0894ad-4c05-440c-9509-d0123226498d" class="bulleted-list"><li>Delete package.lock file.</li></ul><ul id="1d37882f-2259-446c-9bd3-16782603b47b" class="bulleted-list"><li><code>npm cache clean —force</code></li></ul><p id="1624d91c-a142-43ef-97a8-dfc3a5ddcc85" class="">and then repeating the steps above to install enable3d.</p><hr id="6f571f26-e6d0-4198-b982-76207b787aa2"/><h2 id="5ce133b1-0e30-4707-a530-325e367f3175" class=""><span style="border-bottom:0.05em solid">Setting up the world</span></h2><p id="dceff143-5ac5-4c23-a6fa-11a7d11affa0" class="">Now that we have completed installing the dependency you should navigate to the index.ts file this is where all the code for your physics world will occur when you open it you should notice the following code:</p><p id="a3be1ad6-f29b-401f-b8b1-88c48bfc3739" class=""><code>import { Scene3D, PhysicsLoader, Project, ExtendedObject3D } from &#x27;enable3d&#x27;;</code></p><p id="8329842c-2ce8-4891-abe7-219753cbbb15" class=""><code>import * as THREE from &#x27;three&#x27;</code></p><p id="7243beba-c3e7-483a-8853-c91389ff256e" class="">
+</p><p id="a531f09d-e69b-4d30-8881-11badf034682" class=""><code>export class ThreePhysicsComponent extends Scene3D {</code></p><p id="417fa9af-0f12-498e-bdb9-45223ccede25" class=""><code>constructor() {</code></p><p id="d261b4a4-d895-455c-b96e-e0327088cdec" class=""><code>super()</code></p><p id="d4df6eec-88c1-4e30-a30a-01d22c9cd9cc" class=""><code>}</code></p><p id="3b6d9c6a-a05d-4745-a036-02ba8b3e72d2" class=""><code>async init() {</code></p><p id="99380733-48a4-4080-a3f8-50fe9ac5a7cc" class=""><code>this.renderer.setPixelRatio(1)</code></p><p id="3c12079f-6a34-44fb-b1e8-04f6f2af9046" class=""><code>this.renderer.setSize(window.innerWidth, window.innerHeight)</code></p><p id="e6e37936-5a09-4c1f-bbb7-b9c071c7d487" class=""><code>}</code></p><p id="9f59d586-2cae-49eb-ad1e-1d4917b716e5" class=""><code>async create(){</code></p><p id="0d7e9aeb-d7e1-4e4a-966c-27ea2534c00c" class=""><code>}</code></p><p id="88774391-6c0f-4c2e-9143-892316b15ba8" class=""><code>update(){</code></p><p id="298b7b7d-e413-4dc1-b33a-e4cf7c92733b" class=""><code>}</code></p><p id="69c50fc6-16f9-4875-b0ca-236cf6422456" class=""><code>}</code></p><p id="f6e2ebe3-22f8-4e79-b6de-a82200060ea3" class="">
+</p><p id="421575f5-7a84-479b-8565-6af00968df63" class=""><code>// This sets the project config</code></p><p id="e3b85259-334a-4125-b429-3c39d27b03ac" class=""><code>const config = { scenes: [ThreePhysicsComponent], antialias: true, gravity: { x: 0, y: -9.81, z: 0 } }</code></p><p id="4b8f591a-3f6a-4653-8fe9-2ea03c2a4186" class=""><code>PhysicsLoader(&#x27;/ammo&#x27;, () =&gt; new Project(config))</code></p><p id="943dcfa5-3d1a-47fd-af4b-08bc59aef7b5" class="">
+</p><p id="b3c09a0b-0bc4-43ae-847e-dc6d18dbbc32" class="">This is the baseline code for the project. Now if you open the terminal and type the command:</p><ul id="0cfae810-1d4a-4828-9fb5-a8fbb8246991" class="bulleted-list"><li><code>npm start</code> ( this command starts your node live server with your code )</li></ul><p id="efc90dd2-b7b7-408a-980a-08eea66191fa" class="">you should notice that it will open your browser and there will be only a black screen.</p><figure id="8453f6f4-ebef-4588-b5d9-238133584c98" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled.png"><img style="width:1917px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled.png"/></a></figure><h3 id="71bc4f82-23cc-462f-ad4b-f3011c1c47df" class=""><span style="border-bottom:0.05em solid">Changing camera position</span></h3><p id="61dcc1b0-2d49-42ad-831c-224dc8449c4d" class="">To create the world all we have to do is type the following statement in the create function:</p><p id="c6244ce2-0632-4822-a2bb-78d3c3ca87fc" class=""><code>this.warpSpeed()</code></p><p id="0870d22d-244b-4a83-b982-5d439d62125d" class="">this will set up the lighting, ground, grid, sky and orbit controls for your world.</p><p id="178e3868-f065-4cd1-9ffb-989588c1bc1d" class="">Default values are given for a lot of the properties for this in enable3d for the sake of simplicity, But because we want to see the entirety of the scene we want to change the camera position. camera position is represented in this world using vector3 which contains x, y, and z. y represents height, z represents forward or backward and x represents how far left or right something in the world is.</p><p id="bffd0ffc-bee5-47eb-9023-f258a5d488bf" class="">
+</p><figure id="4461b4ff-d63c-414e-87b2-67b8b6fa3745" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%201.png"><img style="width:232px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%201.png"/></a></figure><p id="c2f91c4d-3fa6-4928-bf75-4a91ffd968e4" class="">By default, vector3 for the camera is just given a random vector.</p><figure id="fe3e3db5-8e5f-4995-9311-a8d745e63363" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%202.png"><img style="width:178px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%202.png"/></a></figure><p id="6eb005e1-46c3-4c19-8852-b246997445bb" class="">This makes the world&#x27;s camera look like this: </p><figure id="e41cd19d-1563-4058-b6be-e512fafe4f93" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%203.png"><img style="width:1919px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%203.png"/></a></figure><p id="00d69bad-2d8c-4df7-9b69-a872a22185b2" class="">To change the camera position in the create statement we add this statement to change the vector3.</p><p id="71204616-a19e-4cc7-9607-8ecc539c7487" class=""><code>this.camera.position.set(13, 10, 23)</code></p><p id="7fd88e5f-05c2-420f-bf2a-5ae2e12084c5" class="">Now the scene should look like this: </p><figure id="8239f069-a1b7-4e5e-a6e2-3f6e6aa164b3" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%204.png"><img style="width:1272px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%204.png"/></a></figure><hr id="04e117cc-457b-42f8-9573-e933968e4912"/><h2 id="563630d4-8271-4f40-99f7-ea112fc040bf" class=""><strong><span style="border-bottom:0.05em solid">Rigid bodies</span></strong></h2><h2 id="f74f997a-2c77-4b4e-9de1-3c664504a687" class=""><span style="border-bottom:0.05em solid">Dynamic Rigid Body</span></h2><h3 id="68a36050-3ef6-4c33-9966-69a3b7475d65" class=""><span style="border-bottom:0.05em solid">What is a Dynamic Rigid Body?</span></h3><p id="8c7e1ba6-2f04-4afa-b87f-0aeaff583c42" class="">During physics interaction, there has to be a body. In ammo.js this body is called a rigid body/ collision body. A rigid body is a thing that moves, collides, has mass, and can have impulses applied to it. But on its own, it&#x27;s like a ghost without a shell. It needs a shape so as to interact in collisions and to also help calculating its inertia tensor( distribution of mass )</p><h3 id="0bc212f8-6735-4360-bfe7-aecdfba7ea99" class=""><span style="border-bottom:0.05em solid">How to create a Dynamic rigid body?</span></h3><p id="353299b3-99c5-4e61-904a-023415c7fd18" class="">To add a Dynamic rigid body using enable3d you just enter this statement into the create function:</p><p id="389b749d-bea5-42fe-b2d3-101da4578432" class=""><code>let box1 = this.physics.add.box({}, { phong: { color: &#x27;green&#x27; } })</code></p><p id="930251df-8467-4060-8784-116332c26bb4" class="">This is what should show up in your scene:</p><figure id="1928f293-6863-4526-aaba-5555a537a7e1" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%205.png"><img style="width:1298px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%205.png"/></a></figure><p id="c38c2800-792a-4530-a2e3-8c0522009ed2" class="">this statement can be edited to create multiple different types of shapes, colours and materials.</p><p id="ed1122a1-196c-4571-94ff-1024a3486590" class=""><code>let sphere= this.physics.add.sphere({}, { lambert: { color: &#x27;red&#x27; } })</code></p><figure id="9dd4e1d0-ac7e-4ffa-b049-3543162ede8b" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%206.png"><img style="width:1092px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%206.png"/></a></figure><p id="3c28fedd-210d-4951-aefd-4c282bd47159" class="">For a full list of colours, shapes, and materials you can use for the objects you add to the world you can go to three.js documentation.</p><hr id="4c4d9136-79ff-4016-8178-10cf297f005b"/><h2 id="7f2b8e82-47e6-4c97-ad31-ef33b8963f14" class=""><span style="border-bottom:0.05em solid">Kinematic Rigid Body</span></h2><h3 id="dfc23122-3da3-4aa2-b59d-dc8d1dc20e88" class=""><span style="border-bottom:0.05em solid">What is a Kinematic rigid body?</span></h3><p id="9ddd05a8-2b57-40db-84bc-bd1b71d270f3" class="">These bodies are not affected by the physics of the Ammo.js world but can be animated during the physics simulation, These bodies are similar to the static rigid bodies in that they have a mass of 0 and are not affected by the physics of the world, but unlike the static rigid bodies we animate these bodies.</p><h3 id="5ad65942-3b97-436a-8856-951a2bf9bc74" class=""><span style="border-bottom:0.05em solid">How to create a Kinematic rigid body?</span></h3><p id="e82292b0-1ada-402e-bab9-90f8333724c0" class="">To  create a Kinematic body we just create a body in the create function with a mass of 0 like how we would create a static body. Pass it into the update function and update its properties.</p><h2 id="25fb993d-59ba-4f9f-8bf1-a0f1a1d62021" class=""><span style="border-bottom:0.05em solid">Static Rigid body</span></h2><h3 id="b59750f7-b514-4b35-b7d4-7ecb03698419" class=""><span style="border-bottom:0.05em solid">What is a Static Rigid Body?</span></h3><p id="275b22b5-3e18-44cd-881f-e86ec8ca8b6b" class="">These bodies are not affected by the physics of the Ammo.js world they have a mass of 0.</p><h3 id="6f6748aa-fc59-439e-b2a0-45d10c3c2d02" class=""><span style="border-bottom:0.05em solid">How to create a static rigid body?</span></h3><p id="6cd9260b-5881-422f-a3fd-b0d699d21a75" class="">To create a static body it is similar to creating any other body you just need to give the static objects mass property to 0 in the parameters when creating the object.</p><p id="2390d434-8988-4e4a-bc7e-7e93cd1d7f82" class=""><code>let staticbox = this.physics.add.box({y:4, mass:0}, {phong: { color: &#x27;yellow&#x27; }})</code></p><p id="bced97f0-9214-4723-aaf3-0c894a4ce494" class=""><code>// to show that the box is static I just a dynamic rigid body to drop on top of it:</code></p><p id="7752425a-70a9-45c2-a01e-d1d870f09e7a" class=""><code>let box = this.physics.add.box({y:6})</code></p><p id="94614ccb-448a-4df3-a3e8-eda943d2ded7" class="">the scene should now look like this the yellow block being the static body:</p><figure id="27babdf9-7d2f-486e-a059-dbc5237fd308" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%207.png"><img style="width:1918px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%207.png"/></a></figure><p id="dac38491-9788-406b-8a66-dad9cc32c4d5" class="">
+</p><h2 id="43ffddbf-f95e-4001-8b73-ca5655e10ff5" class=""><span style="border-bottom:0.05em solid">Constraints</span></h2><h3 id="3888bf3e-7a70-4963-b5b2-c3cd0e3d8012" class=""><span style="border-bottom:0.05em solid"><strong>What are constraints?</strong></span></h3><p id="aa0b9f22-4498-461a-bb7a-786ec54f0933" class="">Constraints can be thought of as joints that would be used in real life to connect multiple objects. There are multiple types of constraints in ammo.js to carry out different functions.</p><h2 id="89831311-99c3-491f-b56a-30b78a755c0b" class=""><span style="border-bottom:0.05em solid">Point to Point constraint</span></h2><h3 id="96ec7533-3de7-4b2d-ac67-eb541de101db" class=""><span style="border-bottom:0.05em solid">What is a Point to Point constraint?</span></h3><p id="f368b238-14f1-4d7e-a39d-6902e37eca85" class="">Point-to-point constraints limit the translation of two pivot points of rigid bodies to match the world space. Using this constraint, you can create a chain of rigid bodies. This constraint can be useful for creating something like a robotic arm using several rigid bodies in columns and rows.</p><h3 id="9d84592c-25b4-4f28-a9d3-4add78840ee7" class=""><span style="border-bottom:0.05em solid">How to create a Point to Point constraint?</span></h3><p id="8ac1ec17-1b04-4f3d-a734-f1743e030b25" class="">To create a point-to-point constraint you need to start by creating 2 or more bodies with some distance between them in this case I have chosen to change the z-axis for box 2 to 4.</p><p id="dc14b2f8-94c0-408f-95ae-45a8f0bb8743" class=""><code>let box1 = this.physics.add.box({ y: 2, mass: 0 })  // the mass property being equal // 0 means the</code> <code>body is static</code></p><p id="f6b65705-3501-4eb5-8922-3df7f27fe1ce" class=""><code>let box2 = this.physics.add.box({ y: 2, z: 4 })</code></p><p id="06eaf986-663a-476c-982f-54eebf493c1d" class="">Now you can create the point-to-point constraint to do that we call the constraints.PointToPoint function passing into the parameters both the boxes and the pivot points for each.</p><p id="dd2c4a30-51d5-42d4-9efc-0e0cf70339c6" class=""><code>this.physics.add.constraints.pointToPoint(box1.body, box2.body, {</code></p><p id="ee3c6b1a-2be2-4ca1-b226-1307bb5cd717" class=""><code>pivotA: { z: 1.5 },</code></p><p id="220ac6ca-6f3a-425b-85fc-1aae687d1da8" class=""><code>pivotB: { x: -1.5 }}) </code></p><p id="4c8e953d-c892-4847-ab48-4731b087f3af" class="">Now your scene should look like this when the debugger is on:</p><figure id="0df449db-9830-432e-a372-37ce65a927ef" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%208.png"><img style="width:240px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%208.png"/></a></figure><p id="c598106f-2fba-4bc5-b3ff-68f15bffac80" class="">You can create more than one connection with a point to point constraint to create a chain</p><p id="ac8fa78c-4407-4eaf-b42b-16bb1e58c79e" class=""><code>// creating the bodies</code></p><p id="b750b7f9-3a51-4f72-b973-0cf6ccebce5b" class=""><code>let box1 = this.physics.add.box({ y: 6, mass: 0 })</code></p><p id="97c01b54-358c-41c6-adcb-533bdbe4339f" class=""><code>let box2 = this.physics.add.box({ y: 6, z: 4 })</code></p><p id="6348aeda-1067-48ca-b8b4-5622b5f1be52" class=""><code>let box3 = this.physics.add.box({y:6, z: 6})</code></p><p id="4a7c9194-16b9-42f2-875f-6c65bf1f5f92" class=""><code>// Creating p2p between box 1 and 2</code></p><p id="5a972922-59ba-4bd4-b0a3-2f71cd9fd83f" class=""><code>this.physics.add.constraints.pointToPoint(box1.body, box2.body, {</code></p><p id="14407036-4185-4ba6-9586-a4b28ebc14e7" class=""><code>pivotA: { z: 1.5 },</code></p><p id="70186f96-4d76-44c9-9494-c806359cb24a" class=""><code>pivotB: { x: -1.5 }})</code></p><p id="a77ecab8-25c7-405d-8286-0ac073323108" class=""><code>// Creating p2p between box 2 and 3</code></p><p id="54e413fb-7bfc-4b03-852e-9dd1dbd3b366" class=""><code>this.physics.add.constraints.pointToPoint(box2.body, box3.body, {</code></p><p id="316c7ad6-1bd8-474f-8848-79cbbc80de22" class=""><code>pivotA: { z: 1.5 },</code></p><p id="1e23ba11-304f-470f-862d-bbfdf13a7fa4" class=""><code>pivotB: { x: -1.5 }})</code></p><p id="b620b9ab-00e4-438b-a7ec-e1a12bd77d5f" class="">Now you should have a chain which looks like this:</p><figure id="baf55454-a881-48c0-a2af-1b1560f8684c" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%209.png"><img style="width:222px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%209.png"/></a></figure><h2 id="6e3e3c54-fda3-4cc0-b7fa-21bb08949a25" class=""><span style="border-bottom:0.05em solid">Hinge Constraint</span></h2><h3 id="c7051ff0-980b-4daa-9ebc-3bd26a66b08e" class=""><span style="border-bottom:0.05em solid">What is a hinge constraint?</span></h3><p id="0112dcc2-4f0a-4b6c-8974-239859e2d06f" class="">Hinge constraints are joints that restrict rotation around the pivot of two bodies to only one axis, therefore this axis could be useful for creating something like a door. Or even flaps on an airplane model as this constraint also allows the user to specify the limits and motor of the hinge.</p><h3 id="b854752e-02b2-403f-8915-e71a251b1dde" class=""><span style="border-bottom:0.05em solid">How to add a Hinge constraint?</span></h3><p id="af493438-acc0-4753-8d1a-b0b8268f0d57" class="">Adding a hinge constraint similar to any other constraint being added although the main difference being 2 of the parameters it takes. axisA and axisB</p><p id="3849494b-ee51-4127-a79c-7f3b5aabc3f8" class=""><code>// Creating the bodies</code></p><p id="67b6db8f-3d33-4dbf-98fa-461054b249b4" class=""><code>let box1 = this.physics.add.box({ depth: 0.25, y: 5, z: 0, x: 0, mass: 0 })</code> <code><a href="//static">//static</a></code><code> body</code></p><p id="924b94e4-f475-4935-b434-0d8560db6768" class=""><code>let box2 = this.physics.add.box({ depth: 0.25, y: 5, z: 0.5, x: 0 + 1.25 })</code></p><p id="6a30ec98-6f4c-43ba-9569-7784b4691569" class=""><code>let box3 = this.physics.add.box({ depth: 0.25, y: 5, z: 1, x: 0 + 1.25 })</code></p><p id="a8d7f5b3-ef7e-4463-b52f-c01cc2e629d0" class="">
+</p><p id="ca39e1b2-88ab-4235-b960-6ac21ef89fa5" class=""><code>// Creating the first constraint between box1 and 2</code></p><p id="d91007c7-e739-4d1b-ab32-3d882153dc29" class=""><code>this.physics.add.constraints.hinge(box1.body, box2.body, {</code></p><p id="76fd9c63-0693-4070-9185-ca8437fc5ff2" class=""><code>pivotA: { y: -0.65 },</code></p><p id="ab37d1fa-25ac-4b2a-b645-29578900fec3" class=""><code>pivotB: { y: 0.65 },</code></p><p id="ceffcaa1-ee3a-4b93-9850-03199463c032" class=""><code>axisA: { x: 1 },</code></p><p id="ca6062a9-2401-41c0-a46a-6faa151af13e" class=""><code>axisB: { x: 1 }</code></p><p id="e1a15da6-d39d-4ae0-a741-379ff645f4fd" class=""><code>})</code></p><p id="d0356c1a-d3c8-4196-980e-a8482e35dd6d" class="">
+</p><p id="2e1d19da-a298-46ae-aa18-fff3723ad078" class=""><code>// creating the second constraint between box 2 and 3</code></p><p id="a3f32523-7ac7-47fa-8c1e-deef50d10a5e" class=""><code>this.physics.add.constraints.hinge(box2.body, box3.body, {</code></p><p id="ee856460-ac16-4cc1-89b4-4824d5492cd6" class=""><code>pivotA: { y: -0.65 },</code></p><p id="cdbb246f-f6b0-409b-b16f-ce747cb3cb00" class=""><code>pivotB: { y: 0.65 },</code></p><p id="03508030-1808-44d2-8106-59162fc3c59b" class=""><code>axisA: { x: 1 },</code></p><p id="ea905ed3-13d8-49bc-a897-8153da9703d0" class=""><code>axisB: { x: 1 }</code></p><p id="69ce582c-cde1-430c-8306-ac6760066eae" class=""><code>})</code></p><p id="61a72dbf-f9ba-43ea-aa08-b9df3323e268" class="">the scene should now look like this when the objects with the hinge constraints are added:</p><figure id="00f4e565-28c2-4985-a2f3-6ddeac86dc29" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2010.png"><img style="width:1912px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2010.png"/></a></figure><h2 id="3703f033-fc9d-42a3-a610-aa0bf28735f6" class=""><span style="border-bottom:0.05em solid">Slider constraint</span></h2><h3 id="6fd7bab1-4e3a-41d2-91d7-281459b79e28" class=""><span style="border-bottom:0.05em solid">What is a slider constraint?</span></h3><p id="dcb32fbf-2adc-4ce5-b1c5-9916981027d8" class="">The slider constraint allows a body to rotate around one axis and translate along that axis. This constraint would be useful for creating something like a piston.</p><h3 id="b6654270-3f76-4135-a08f-9aae7cfe2804" class=""><span style="border-bottom:0.05em solid">How to add a slider constraint?</span></h3><p id="7054c1e1-4e2c-48a2-bcb2-c44aa1ac66b2" class="">Creating a slider constraint is very similar to the creation of any other constraint. The main difference is that 2 of the parameters that the slider constraint takes when creating it is a lower and upper limit which is how far up or down along the reference frame that the second body can slide.</p><p id="86eb2eaa-e66f-49fc-a02d-ebad70789af2" class=""><code>// Create main cylinder</code></p><p id="b2d8f6c4-d972-4bba-997a-acffb49355a2" class=""><code>let box1 = this.physics.add.cylinder({ height: 6, y: 10, x: 0, radiusTop: 0.6, radiusBottom: 0.6, collisionFlags: 6, mass: 100 })</code></p><p id="be1d59ec-f517-4454-bd68-9173287e5c9f" class=""><code>// create second cylinder</code></p><p id="35f7d92f-b70c-4b39-99fb-1c98cdca0721" class=""><code>let box2 = this.physics.add.cylinder({ height: 4, y:10, x: 0, radiusTop: 0.4, radiusBottom: 0.4, collisionFlags: 4, mass: 1 })</code></p><p id="99b96854-1862-46e1-9f16-63d32bb18405" class=""><code>// takes four parameters the 2 bodies and the frames of those bodies</code></p><p id="8ab0e595-836a-4ce8-bf36-96778e33b496" class=""><code>this.physics.add.constraints.slider(box1.body, box2.body, {</code></p><p id="60509039-aea2-4243-acc6-6eafbd0cc198" class=""><code>frameA: { x: Math.PI / 2, y: 0, z: 0 },</code></p><p id="210a5fc1-6da1-4700-a562-5ee6b05e567f" class=""><code>frameB: { x: Math.PI / 2, y: 0, z: 0 },</code></p><p id="f0afd068-c2cb-4add-8511-df2e24a86bf5" class=""><code>linearLowerLimit: -5,</code> </p><p id="2be483ca-8d4b-455c-8e45-d1a232934607" class=""><code>linearUpperLimit: 5</code></p><p id="a99229a8-b3ab-499d-affd-e16c20aef412" class=""><code>})</code></p><p id="b5fb10f9-0aa4-4214-a2fb-80343ddcae06" class="">Your scene should now look like this:</p><figure id="8b94544e-0870-4993-b6d0-d8df1299a264" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2011.png"><img style="width:1919px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2011.png"/></a></figure><h2 id="5dbd693a-8275-4518-bbb4-f57e25b580e9" class=""><span style="border-bottom:0.05em solid">Cone twist constraint</span></h2><h3 id="f015469c-7978-4d76-bd58-623427ec7b14" class=""><span style="border-bottom:0.05em solid">What is a cone twist constraint?</span></h3><p id="afdadaf0-ac84-476e-a549-c71991e0922f" class="">This cone constraint is a special version of the point-to-point constraint that adds cone and twist axis limits. The axis for this constraint serves as a twist axis. This constraint is useful for creating something like a ragdoll.</p><h3 id="bafe3c3c-ee08-430d-a14c-714601ee6cdd" class=""><span style="border-bottom:0.05em solid">How to add a cone twist constraint?</span></h3><p id="5a8049ee-5f30-4a63-a433-3113cca01d41" class="">This is the code for creating a cone twist constraint the main difference is that in the parameters is takes the frames of both the bodies.</p><p id="a725ca76-c61c-4635-bfdd-7a0d6f5dbdbd" class=""><code>// Creating the boxes</code></p><p id="13f9295b-68e3-4a79-b9ed-f7055481dca4" class=""><code>let box1 = this.physics.add.box({ y: 5, x: 0, collisionFlags: 2, mass: 100 })</code></p><p id="caec8965-befe-421a-b925-cef822643138" class=""><code>let box2 = this.physics.add.box({ y: 4, x: 0, z: 0 })</code></p><p id="138e1864-9af5-4ec3-9c71-a2d0c6afe7b2" class="">
+</p><p id="af5a3daa-306f-4a11-83fa-de7aeab6252d" class=""><code>// Adding the constraint</code></p><p id="0ba554cf-e627-41c0-8e30-72b74abfc697" class=""><code>this.physics.add.constraints.coneTwist(box1.body, box2.body, {</code></p><p id="5d7572d9-fc09-4ea9-99fc-2eeca9307ac3" class=""><code>frameA: { x: 1, y: 1, z: 1 },</code></p><p id="52019347-e245-49a9-aa4a-e2eaf81b570d" class=""><code>frameB: { x: 0.5, y: -0.5, z: 0.5 }</code></p><p id="bf930c86-11f3-4fae-a2e5-cdfae8b30cc2" class=""><code>})</code></p><p id="6036cf08-9cf7-4222-8763-5cf84a9231ef" class="">
+</p><p id="14507c20-1e0e-4d89-9047-6178095956fa" class="">This is how your scene should look after the constraint has been added:</p><figure id="330154a2-fb9e-4b02-892c-da86720f66e2" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2012.png"><img style="width:1919px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2012.png"/></a></figure><h2 id="42cb6304-db55-49d8-984a-f590180d4a99" class=""><span style="border-bottom:0.05em solid">Spring constraint</span></h2><h3 id="b672e8a9-914d-4090-9b83-3e4a4ed72b2d" class=""><span style="border-bottom:0.05em solid">What is a Spring constraint?</span></h3><p id="d4068c47-3d80-4bcf-9a57-922e21687189" class="">A spring constraint applies forces to the attached bodies based on spring and damper behavior this kind of constraint has the behavior of a real-life spring and has many properties that can allow the spring behavior to change a great deal. This is useful for the creation of stuff like car simulations that require spring behavior in their suspensions.</p><h3 id="4db22de4-77a3-4f88-9a2d-af319706ee35" class=""><span style="border-bottom:0.05em solid">How to create a Spring constraint?</span></h3><p id="063472d3-5c8a-414b-ac00-f3e6c36b160c" class="">To create a spring constraint you need to define bodies which are going to be attachments for the springs, define the limits on the vector3 which the spring can apply its elastic behaviour and set a damping for the spring these will be all taken as parameters in the creation of the constraint. </p><p id="f02d6e81-90c2-4913-ae13-92b59a6f48a1" class=""><code>// Creating the bodies</code></p><p id="cf8f381b-c874-4542-8977-ab7d46fbc799" class=""><code>let box1 = this.physics.add.box({ y: 10, x: 5, z: 0, mass: 0 })</code></p><p id="0c9be2b6-f6ff-4d73-8740-bd1d1864f04a" class=""><code>let box2 = this.physics.add.box({ y: 9, x: 5, z: 0, mass: 2 })</code></p><p id="4af08872-20df-493d-bd94-a5b4a28ac0f7" class=""><code>let box3 = this.physics.add.box({ y: 8, x: 5, z: 0, mass: 8 })</code></p><p id="d961f0da-8b82-47d6-a998-ceda79e8ab92" class="">
+</p><p id="46c1e6ac-3395-4fbf-9acf-47076b66ab52" class=""><code>// Defining the limits</code></p><p id="d704d3d4-05c4-4d72-aad9-1d6176ead0b2" class=""><code>const linearLowerLimit = { x: -100, y: -100, z: -100 }</code></p><p id="d072135d-3f93-4f22-b1a4-33eab786414d" class=""><code>const linearUpperLimit = { x: 100, y: 100, z: 100 }</code></p><p id="e75b7343-3e81-4f08-b10d-918f2befa0e6" class="">
+</p><p id="d56eebd1-6d27-4cd7-8fd1-3c6d54155544" class=""><code>// Adding constraint between boxA and B</code></p><p id="be03f46f-5f16-4d62-be7f-26af03a36c65" class=""><code>this.physics.add.constraints.spring(box1.body, box2.body, {</code></p><p id="7a93ebd6-92c0-418d-acf2-ba19bdd94c85" class=""><code>damping: 250,</code></p><p id="fda13e3e-4b76-477e-8eb8-39f810793ba9" class=""><code>linearLowerLimit,</code></p><p id="8160a014-645e-425f-af3c-62ab6a199b1a" class=""><code>linearUpperLimit</code></p><p id="ca1fc664-bfe4-4d56-a325-db05c3beaeba" class=""><code>})</code></p><p id="f86d1166-b7ae-4d60-89f8-601a4a6834d9" class="">
+</p><p id="fc59acf4-c39f-4937-af43-0e407c905fd2" class=""><code>// Adding constraint between boxB and c</code></p><p id="df3d36a5-0154-4618-a871-ef859d5bbb92" class=""><code>this.physics.add.constraints.spring(box2.body, box3.body, {</code></p><p id="3e1329db-38f5-4f25-ba7d-c4ad3dfff136" class=""><code>damping: 20,</code></p><p id="d96d4b04-fce3-470e-902c-a47c6df709e6" class=""><code>linearLowerLimit,</code></p><p id="f7d160fb-8e07-45c7-9cf0-fc606d9a9011" class=""><code>linearUpperLimit</code></p><p id="4e44ab25-744b-4f6e-9a61-dde0ed7706cd" class=""><code>})</code></p><p id="4e4ef36d-cc5d-4f6a-87ff-84e7b06bb316" class="">This is how your spring constraint should look in the scene:</p><figure id="59f1e825-79b4-4754-a297-6b0312e54e15" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2013.png"><img style="width:1917px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2013.png"/></a></figure><p id="298d4bb6-53fa-4154-8b69-b48434a5118c" class="">
+</p><hr id="47fe13a7-532b-4d59-a93c-0d57b8ac24a9"/><h2 id="b24e852b-71f3-4e53-81dd-16d41a5fe58e" class=""><span style="border-bottom:0.05em solid">Compound objects</span></h2><h3 id="961a1ddb-a81a-48b0-b37c-f70c49863634" class=""><span style="border-bottom:0.05em solid">What is a compound object</span></h3><p id="e57bf9b6-12a0-479b-be06-9832ad872895" class="">compound objects are 2 or more objects that are bound together this can be used to create complex objects that could not be created with the standard built-in bodies.</p><h3 id="31eef3bc-7284-430f-bc8a-f7c2a1b01dde" class=""><span style="border-bottom:0.05em solid">How to create a compound object</span></h3><p id="19d670db-ef7d-4f82-842e-952c85064b56" class="">the first step to creating a compound shape is creating a group and setting the reference point for the group.</p><p id="67ec3f23-0566-42a6-89a8-16f799915c31" class=""><code>let group = new THREE.Group()</code></p><p id="259ec4a7-295d-43d0-9707-d7288384f576" class=""><code>group.position.z = 9</code></p><p id="91efe9b6-5c71-4f0d-aede-9ac2803a912d" class=""><code>group.position.y = 3</code></p><p id="3f885b1c-1f80-44f9-bd34-0f3b6efdc5b2" class=""><code>group.rotation.z -= 1.5</code></p><p id="13317334-d405-4ed1-bbdd-5d55922c4af7" class="">Now we need to create the body&#x27;s that we are going to add to the group to do this we just declare rigid bodies and set the vector3 in consideration of the reference frame we set for the group.</p><p id="a4cffa38-34bc-4d2a-8a5d-14ae952abfe0" class=""><code>let c1 = this.add.box({ x: -1, y: -1 })</code></p><p id="20a53cf4-b924-4cd6-a8cc-a5233e0f0c7d" class=""><code>let c2 = this.add.box({ x: -1, y: 0 })</code></p><p id="ca62cb0e-7c71-4b7a-aadf-ede2a89c2124" class=""><code>let c3 = this.add.box({ x: 1, y: 0 })</code></p><p id="cb4aacce-517c-469d-abcc-a2b7607fb079" class="">Now we add the objects we want to group the the group itself</p><p id="4d88c21e-69a3-42d5-a189-69c5d7c94825" class=""><code>this.add.existing(group)</code></p><p id="9fdbb139-8dcb-4f87-ba36-240e4fabf7c8" class=""><code>group.add(c1 as any)</code></p><p id="57673d15-3f6f-4255-a649-a87e46854abe" class=""><code>group.add(c2 as any)</code></p><p id="8dbc1e2c-6a06-4c8c-b778-2214690665ab" class=""><code>group.add(c3 as any)</code></p><p id="fef253b8-65e3-4aca-a067-77b3d974647f" class="">Finally, If you want to add physics to this group you can add the following statement:</p><p id="62f498a0-31db-42d5-8873-042dd2f80305" class=""><code>this.physics.add.existing(group as any)</code></p><p id="8e38a37f-facf-49af-ba43-366e3b3713b2" class="">group with debugger should now look like this in the scene:</p><figure id="c9e2dbb3-4344-482b-9077-d85daf51a128" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2014.png"><img style="width:1917px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2014.png"/></a></figure><hr id="e733c56c-447a-42fd-a5d8-d2e50d7e4204"/><h2 id="95697485-53e2-411b-96ae-a6eee638c251" class=""><span style="border-bottom:0.05em solid">Object properties</span></h2><h3 id="03922d12-d097-4733-94a8-7f0153a9a9a1" class=""><span style="border-bottom:0.05em solid">Bounciness</span></h3><p id="e6ba3b24-42e2-4b2c-9ff0-7196c8854fee" class="">setting the bounciness is one of the functions available using three.js to set the bounciness of an object you just need to use this statement:</p><p id="3ede3606-f075-411e-8e9b-ceb39a5d6f1f" class=""><code>let sphere = this.physics.add.sphere({x:0, y:10, z:0});</code></p><p id="98139e89-058f-4fb9-a669-3cb4f6605d40" class=""><code>sphere.body.setBounciness(1); // the parameter takes the bounciness</code></p><p id="3a6659c4-d33d-4dc2-a3d3-a6ac6502cae7" class="">If you enter bounciness to be equal to 1 the bounce will be infinite at the same height it was dropped, If the bounce is higher than 1 it will continuously bounce higher, and if it is less it will bounce lower and lower.</p><h3 id="f991d57c-b76c-4aed-b3a5-bc2d02da6f18" class=""><span style="border-bottom:0.05em solid">Force</span></h3><p id="2ce9fc74-ad1c-47f1-81fe-b3310d3af3bb" class="">Another property you can change is the force applied to the body. Force can be applied to all 3 vector 3 axis if can be done using the following statements: </p><p id="d2694708-a76e-46ab-9efa-e25a4ab27de8" class=""><code>sphere1.body.applyForceX(0.3)</code></p><p id="20c66493-13e0-42e4-8d22-7eca2ea56cf9" class=""><code>sphere.body.applyForceY(-5)  </code></p><p id="6d33876c-c015-42e8-a0cb-f87d7ceac321" class=""><code>sphere.body.applyForceZ(7)</code></p><p id="5f1084b6-3456-4c16-bf6e-19beca891026" class="">the force applied to be thought of like wind blowing the object the greater the wind speed the further and faster an object will be blown. The same applies here the greater the force applied to an axis the faster and further the body will be pushed in that direction.</p><hr id="1f3ff9dd-c439-482e-879a-7336d6ac2ca5"/><h2 id="b6e76574-4955-427c-a41c-e4ceff86a447" class=""><span style="border-bottom:0.05em solid">Physics Debugger</span></h2><p id="470db4dc-0f5b-403e-bc0a-45a29569077f" class="">A cool feature included within enable3d is a built-in physics debugger. This debugger can allow you to see the axis and the masks of the objects within the physics world which can assist in the detection and correction of errors in your computer program.</p><h3 id="afdb3cc7-b5a2-4f66-bc79-53f1cb3254a4" class="">Adding a debugger</h3><p id="6dc37bb4-ee49-4110-88f9-4c97fb4900bd" class="">Adding the debugger is a simple one-line statement within the async create function just add this statement this will enable the physics debugger within the world..</p><p id="be398f70-34ea-49cc-9ac2-b378cf82eefd" class=""><code>// enable physics debug</code></p><p id="b31155cc-187c-4af2-ac94-b1da15d0200b" class=""><code>if (this.physics.debug) {</code><div class="indented"><p id="e82688c8-a674-4e3b-aee8-b55226fbc2e9" class=""><code>this.physics.debug.enable()</code></p></div></p><p id="b0a11612-8c7b-4048-94d0-16ba98dec7ec" class=""><code>}</code></p><p id="194bffdf-68fa-4119-9c4f-c57a60beeeac" class="">When the debugger is enabled:</p><figure id="2f9c223b-a055-4899-980c-f6bfb3f2a720" class="image"><a href="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2015.png"><img style="width:1916px" src="How%20to%20guide-%20Getting%20started%20with%20enable3d%208453f6f4ebef4588b5d9238133584c98/Untitled%2015.png"/></a></figure><hr id="59f95fea-dbf8-46ee-9459-dc2764318d22"/><h2 id="00a0afcb-ea11-4fab-ae7f-6f779177f10f" class=""><span style="border-bottom:0.05em solid">conclusion</span></h2><p id="1426751d-04b7-48ea-adc2-23872aaf056f" class="">Thanks for reading my guide for more information and help with concepts not covered here go to enable 3ds website: <a href="https://enable3d.io/">https://enable3d.io/</a>. For information on three.js please go here <a href="https://threejs.org/">https://threejs.org/</a>. Finally, check out this video tutorial that inspired this guide <a href="https://www.youtube.com/watch?v=j6nv3JIAFLk">https://www.youtube.com/watch?v=j6nv3JIAFLk</a>.</p><p id="52854cee-9afc-4904-9ff0-5d7ef7f30838" class="">
+</p></div></article></body></html>
