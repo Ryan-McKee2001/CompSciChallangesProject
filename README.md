@@ -1,4 +1,4 @@
-# CompSciChallangesProject
+# Computer Science Challange's Project
 This is my Computer science challanges project on Robotics and manufacturing: structures 
 
 The objective of this project is to:
